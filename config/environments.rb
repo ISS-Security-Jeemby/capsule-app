@@ -4,7 +4,7 @@ require 'roda'
 require 'figaro'
 require 'logger'
 
-module Credence
+module TimeCapsule
   # Configuration for the API
   class App < Roda
     plugin :environments
