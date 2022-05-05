@@ -20,7 +20,6 @@ module TimeCapsule
             username: routing.params['username'],
             password: routing.params['password']
           )
-
           session[:current_account] = account
           flash[:notice] = "Welcome back #{account['username']}!"
           routing.redirect '/'
