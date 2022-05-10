@@ -22,7 +22,7 @@ describe 'Test Service Objects' do
              .to_return(body: @api_account.to_json,
                         headers: { 'content-type' => 'application/json' })
 
-      account = Credence::AuthenticateAccount.new(app.config).call(**@credentials)
+      account = TimeCapsule::AuthenticateAccount.new(app.config).call(**@credentials)
       _(account).wont_be_nil
       _(account['username']).must_equal @api_account[:attributes][:username]
       _(account['email']).must_equal @api_account[:attributes][:email]
@@ -33,8 +33,8 @@ describe 'Test Service Objects' do
              .with(body: @mal_credentials.to_json)
              .to_return(status: 403)
       _(proc {
-        Credence::AuthenticateAccount.new(app.config).call(**@mal_credentials)
-      }).must_raise Credence::AuthenticateAccount::UnauthorizedError
+        TimeCapsule::AuthenticateAccount.new(app.config).call(**@mal_credentials)
+      }).must_raise TimeCapsule::AuthenticateAccount::UnauthorizedError
     end
   end
 end
