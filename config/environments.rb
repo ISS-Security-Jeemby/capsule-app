@@ -3,6 +3,7 @@
 require 'roda'
 require 'figaro'
 require 'logger'
+require 'rack/ssl-enforcer'
 
 module TimeCapsule
   # Configuration for the API
@@ -20,6 +21,10 @@ module TimeCapsule
     # Logger setup
     LOGGER = Logger.new($stderr)
     def self.logger = LOGGER
+
+    configure :production do
+      use Rack::SslEnforcer, hsts: true
+    end
 
     configure :development, :test do
       require 'pry'
