@@ -2,6 +2,9 @@
 
 source 'https://rubygems.org'
 
+source 'https://rubygems.org'
+ruby File.read('.ruby-version').strip
+
 # Web
 gem 'puma'
 gem 'roda'
