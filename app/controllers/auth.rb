@@ -36,6 +36,26 @@ module TimeCapsule
           routing.redirect @login_route
         end
       end
+
+      @register_route = '/auth/register'
+      routing.is 'register' do
+        routing.get do
+          view :register
+        end
+
+        routing.post do
+          account_data = JsonRequestBody.symbolize(routing.params)
+          CreateAccount.new(App.config).call(**account_data)
+
+          flash[:notice] = 'Please login with your new account information'
+          routing.redirect @login_route
+        rescue StandardError => e
+          App.logger.error "ERROR CREATING ACCOUNT: #{e.inspect}"
+          App.logger.error e.backtrace
+          flash[:error] = 'Could not create account'
+          routing.redirect @register_route
+        end
+      end
     end
   end
 end
