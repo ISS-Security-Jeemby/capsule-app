@@ -18,6 +18,7 @@ gem 'pry'
 gem 'http'
 
 # Security
+gem 'rack-ssl-enforcer'
 gem 'rbnacl' # assumes libsodium package already installed
 
 # Development
