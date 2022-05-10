@@ -2,7 +2,7 @@
 
 require 'http'
 
-module Credence
+module TimeCapsule
   # Returns an authenticated user, or nil
   class CreateAccount
     class InvalidAccount < StandardError; end
