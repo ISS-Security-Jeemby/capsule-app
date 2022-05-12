@@ -12,9 +12,9 @@ module TimeCapsule
     end
 
     def call(email:, username:, password:)
-      message = { email:,
-                  username:,
-                  password: }
+      message = { email:email,
+                  username:username,
+                  password: password}
 
       response = HTTP.post(
         "#{@config.API_URL}/accounts/",

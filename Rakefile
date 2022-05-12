@@ -4,6 +4,8 @@
 require 'rake/testtask'
 require './require_app'
 
+task :default => :spec
+
 task :print_env do
   puts "Environment: #{ENV.fetch('RACK_ENV', 'development')}"
 end
