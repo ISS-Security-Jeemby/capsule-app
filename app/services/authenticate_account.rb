@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'http'
+require 'pry'
 
 module TimeCapsule
   # Returns an authenticated user, or nil
@@ -8,6 +9,7 @@ module TimeCapsule
     class UnauthorizedError < StandardError; end
 
     def initialize(config)
+     
       @config = config
     end
 
