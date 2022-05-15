@@ -39,16 +39,16 @@ module TimeCapsule
       use Rack::SslEnforcer, hsts: true
 
       use Rack::Session::Redis,
-        expire_after: ONE_MONTH,
-        redis_server: {
-          url: ENV.delete('REDIS_TLS_URL'),
-          ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE }
-        }
+          expire_after: ONE_MONTH,
+          redis_server: {
+            url: ENV.delete('REDIS_TLS_URL'),
+            ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE }
+          }
     end
 
     configure :development, :test do
-      # Note: REDIS_URL only used to wipe the session store (ok to be nil)
-      SecureSession.setup(ENV['REDIS_URL']) # REDIS_URL used again below
+      # NOTE: REDIS_URL only used to wipe the session store (ok to be nil)
+      SecureSession.setup(ENV.fetch('REDIS_URL')) # REDIS_URL used again below
 
       # use Rack::Session::Cookie,
       #     expire_after: ONE_MONTH, secret: config.SESSION_SECRET
