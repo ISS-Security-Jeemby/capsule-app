@@ -63,7 +63,7 @@ module TimeCapsule
           flash[:error] = 'Our servers are not responding -- please try later'
           routing.redirect @register_route
         rescue StandardError => e
-          App.logger.error "Could not verify registration: #{e.inspect} / account_data: #{account_data} / return: #{a}"
+          App.logger.error "Could not verify registration: #{e.inspect} / account_data: #{account_data}"
           flash[:error] = 'Registration details are not valid'
           routing.redirect @register_route
         end
