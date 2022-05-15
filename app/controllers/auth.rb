@@ -62,6 +62,15 @@ module TimeCapsule
           flash[:error] = 'Could not create account'
           routing.redirect @register_route
         end
+
+        # GET /auth/register/<token>
+        routing.get(String) do |registration_token|
+          flash.now[:notice] = 'Email Verified! Please choose a new password'
+          new_account = SecureMessage.decrypt(registration_token)
+          view :register_confirm,
+               locals: { new_account:,
+                         registration_token: }
+        end
       end
     end
   end
