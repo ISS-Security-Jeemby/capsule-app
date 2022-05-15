@@ -15,7 +15,7 @@ module TimeCapsule
     def call(registration_data)
       registration_token = SecureMessage.encrypt(registration_data)
       registration_data['verification_url'] =
-        "#{@config.APP_URL}/auth/register/#{registration_token}"
+        "#{@config.API_URL}/auth/register/#{registration_token}"
 
       response = HTTP.post("#{@config.API_URL}/auth/register",
                            json: registration_data)

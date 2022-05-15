@@ -20,7 +20,13 @@ module TimeCapsule
       raise(UnauthorizedError) unless response.code == 200
       raise(ApiServerError) if response.code != 200
 
-      response.parse
+      account_info = JSON.parse(response.to_s)['attributes']
+
+      { account: account_info['account']['attributes'],
+        auth_token: account_info['auth_token'] }
+
+    rescue HTTP::ConnectionError
+      raise ApiServerError
     end
   end
 end
