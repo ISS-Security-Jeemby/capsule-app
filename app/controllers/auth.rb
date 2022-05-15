@@ -52,7 +52,7 @@ module TimeCapsule
 
         routing.post do
           account_data = JsonRequestBody.symbolize(routing.params)
-          CreateAccount.new(App.config).call(**account_data)
+          VerifyRegistration.new(App.config).call(account_data)
 
           flash[:notice] = 'Please login with your new account information'
           routing.redirect @login_route
