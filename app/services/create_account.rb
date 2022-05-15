@@ -14,8 +14,7 @@ module TimeCapsule
     def call(email:, username:, password:)
       message = { email:,
                   username:,
-                  password: 
-                }
+                  password: }
 
       response = HTTP.post(
         "#{@config.API_URL}/accounts/",
