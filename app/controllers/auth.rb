@@ -46,20 +46,25 @@ module TimeCapsule
 
       @register_route = '/auth/register'
       routing.is 'register' do
+        # GET /auth/register
         routing.get do
           view :register
         end
 
+        # POST /auth/register
         routing.post do
           account_data = JsonRequestBody.symbolize(routing.params)
           VerifyRegistration.new(App.config).call(account_data)
 
-          flash[:notice] = 'Please login with your new account information'
-          routing.redirect @login_route
+          flash[:notice] = 'Please check your email for a verification link'
+          routing.redirect '/'
+        rescue VerifyRegistration::ApiServerError => e
+          App.logger.warn "API server error: #{e.inspect}\n#{e.backtrace}"
+          flash[:error] = 'Our servers are not responding -- please try later'
+          routing.redirect @register_route
         rescue StandardError => e
-          App.logger.error "ERROR CREATING ACCOUNT: #{e.inspect}"
-          App.logger.error e.backtrace
-          flash[:error] = 'Could not create account'
+          App.logger.error "Could not verify registration: #{e.inspect} / account_data: #{account_data} / return: #{a}"
+          flash[:error] = 'Registration details are not valid'
           routing.redirect @register_route
         end
 
