@@ -16,6 +16,7 @@ gem 'rake'
 
 # Debugging
 gem 'pry'
+gem 'rack-test'
 
 # Communication
 gem 'http'
@@ -40,6 +41,5 @@ group :test do
 end
 
 group :development, :test do
-  gem 'rack-test'
   gem 'rerun'
 end
