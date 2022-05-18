@@ -14,7 +14,7 @@ module TimeCapsule
 
     route do |routing|
       response['Content-Type'] = 'text/html; charset=utf-8'
-      @current_account = SecureSession.new(session).get(:current_account)
+      @current_account = CurrentSession.new(session).current_account
 
       routing.public
       routing.assets
@@ -22,6 +22,8 @@ module TimeCapsule
 
       # GET /
       routing.root do
+        # test: get all capsules if an account logged in
+        GetAllCapsules.new(App.config).call(@current_account) if @current_account.logged_in?
         view 'home', locals: { current_account: @current_account }
       end
     end
