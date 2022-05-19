@@ -12,10 +12,10 @@ module TimeCapsule
           if @current_account.logged_in?
             capsule_list = GetAllCapsules.new(App.config).call(@current_account)
 
-            projects = Capsules.new(project_list)
+            capsules = Capsules.new(capsule_list)
 
-            view :projects_all,
-                 locals: { current_user: @current_account, projects: }
+            view :capsules_all,
+                 locals: { current_user: @current_account, capsules:capsules }
           else
             routing.redirect '/auth/login'
           end
