@@ -15,7 +15,7 @@ module TimeCapsule
             capsules = Capsules.new(capsule_list)
 
             view :capsules_all,
-                 locals: { current_user: @current_account, capsules:capsules }
+                 locals: { current_user: @current_account, capsules: }
           else
             routing.redirect '/auth/login'
           end

@@ -5,10 +5,10 @@ module TimeCapsule
     class Capsule
       attr_reader :id, :name, :type
   
-      def initialize(proj_info)
-        @id = proj_info['attributes']['id']
-        @name = proj_info['attributes']['name']
-        @repo_url = proj_info['attributes']['type']
+      def initialize(cap_info)
+        @id = cap_info['data']['attributes']['id']
+        @name = cap_info['data']['attributes']['name']
+        @type = cap_info['data']['attributes']['type']
       end
     end
   end
