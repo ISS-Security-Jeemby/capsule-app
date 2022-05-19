@@ -1,0 +1,51 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  quality_check:
+    strategy:
+      # don't cancel other jobs if one fails
+      fail-fast: false
+      matrix:
+        os: [ubuntu]
+        ruby-version: ['3.1.1']
+    runs-on: ${{ matrix.os }}-latest  # Runs on latest builds of matrix OSes
+    
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+    
+      # Builds on a predefined action that has Ruby installed 
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+          ruby-version: ${{ matrix.ruby-version }}
+
+      - name: Install packages
+        run: sudo apt-get -yqq install libsodium23
+
+      # - name: Setup test database
+      #   run: |
+      #        cp config/secrets-example.yml config/secrets.yml
+      #        RACK_ENV=test bundle exec rake db:migrate
+      #        bundle exec rake spec
+             
+      - name: Check 
+        run: bundle exec rake spec
+      
+  deploy:
+    needs: quality_check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}  
+          heroku_app_name: ${{secrets.HEROKU_APP_NAME}} #Must be unique in Heroku jeemby-time-capsule
+          heroku_email: ${{secrets.HEROKU_EMAIL}} 
+  
