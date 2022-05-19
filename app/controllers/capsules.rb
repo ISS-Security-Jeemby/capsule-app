@@ -10,9 +10,9 @@ module TimeCapsule
         # GET /capsules/
         routing.get do
           if @current_account.logged_in?
-            project_list = GetAllProjects.new(App.config).call(@current_account)
+            capsule_list = GetAllCapsules.new(App.config).call(@current_account)
 
-            projects = Projects.new(project_list)
+            projects = Capsules.new(project_list)
 
             view :projects_all,
                  locals: { current_user: @current_account, projects: }
