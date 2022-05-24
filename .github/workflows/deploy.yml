@@ -35,8 +35,8 @@ jobs:
       #        RACK_ENV=test bundle exec rake db:migrate
       #        bundle exec rake spec
              
-      - name: Check 
-        run: bundle exec rake spec
+      # - name: Check 
+      #   run: bundle exec rake spec
       
   deploy:
     needs: quality_check
