@@ -2,6 +2,7 @@
 
 require 'roda'
 require 'slim'
+require 'slim/include'
 
 module TimeCapsule
   # Base class for Capsule Web Application
@@ -23,7 +24,7 @@ module TimeCapsule
       # GET /
       routing.root do
         # test: get all capsules if an account logged in
-        GetAllCapsules.new(App.config).call(@current_account) if @current_account.logged_in?
+        # GetAllCapsules.new(App.config).call(@current_account) if @current_account.logged_in?
         view 'home', locals: { current_account: @current_account }
       end
     end

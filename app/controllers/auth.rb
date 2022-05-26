@@ -16,13 +16,18 @@ module TimeCapsule
 
         # POST /auth/login
         routing.post do
-          account_info = AuthenticateAccount.new(App.config).call(
-            username: routing.params['username'],
-            password: routing.params['password']
-          )
+          credentials = Form::LoginCredentials.new.call(routing.params)
+
+          if credentials.failure?
+            flash[:error] = 'Please enter both username and password'
+            routing.redirect @login_route
+          end
+
+          authenticated = AuthenticateAccount.new(App.config).call(**credentials.values)
+
           current_account = Account.new(
-            account_info['account'],
-            account_info['auth_token']
+            authenticated[:account],
+            authenticated[:auth_token]
           )
 
           CurrentSession.new(session).current_account = current_account
@@ -43,6 +48,7 @@ module TimeCapsule
 
       @logout_route = '/auth/logout'
       routing.on 'logout' do
+        # GET /auth/logout
         routing.get do
           CurrentSession.new(session).delete
           flash[:notice] = "You've been logged out"
@@ -60,8 +66,14 @@ module TimeCapsule
 
           # POST /auth/register
           routing.post do
-            account_data = JsonRequestBody.symbolize(routing.params)
-            VerifyRegistration.new(App.config).call(account_data)
+            registration = Form::Registration.new.call(routing.params)
+
+            if registration.failure?
+              flash[:error] = Form.validation_errors(registration)
+              routing.redirect @register_route
+            end
+
+            VerifyRegistration.new(App.config).call(registration)
 
             flash[:notice] = 'Please check your email for a verification link'
             routing.redirect '/'
@@ -71,7 +83,7 @@ module TimeCapsule
             routing.redirect @register_route
           rescue StandardError => e
             App.logger.error "Could not verify registration: #{e.inspect}"
-            flash[:error] = 'Registration details are not valid'
+            flash[:error] = 'Please use English characters for username only'
             routing.redirect @register_route
           end
         end
