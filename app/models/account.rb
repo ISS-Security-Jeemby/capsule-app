@@ -3,7 +3,7 @@
 module TimeCapsule
   # Behaviors of the currently logged in account
   class Account
-    def initialize(account_info, auth_token = nil)
+    def initialize(account_info, auth_token)
       @account_info = account_info
       @auth_token = auth_token
     end
@@ -11,11 +11,11 @@ module TimeCapsule
     attr_reader :account_info, :auth_token
 
     def username
-      @account_info ? @account_info['attributes']['username'] : nil
+      @account_info ? @account_info['username'] : nil
     end
 
     def email
-      @account_info ? @account_info['attributes']['email'] : nil
+      @account_info ? @account_info['email'] : nil
     end
 
     def logged_out?
