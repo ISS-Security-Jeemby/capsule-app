@@ -5,7 +5,7 @@ require_relative 'capsule'
 module TimeCapsule
   # Behaviors of the currently logged in account
   class Letter
-    attr_reader :id, :title, :receiver_id, :status, :is_private# basic info
+    attr_reader :id, :title, :receiver_id, :status, :is_private, # basic info
                 :content,
                 :capsule # full details
 

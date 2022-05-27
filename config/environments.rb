@@ -60,12 +60,16 @@ module TimeCapsule
 
       # use Rack::Session::Redis,
       #     expire_after: ONE_MONTH,
-      #     redis_server: ENV.delete('REDIS_URL')
+      #     redis_server: {
+      #       url: ENV.delete('REDIS_URL')
+      #     }
+    end
+
+    configure :development, :test do
+      require 'pry'
 
       # Allows running reload! in pry to restart entire app
-      def self.reload!
-        exec 'pry -r ./spec/test_load_all'
-      end
+      def self.reload! = exec 'pry -r ./spec/test_load_all'
     end
   end
 end
