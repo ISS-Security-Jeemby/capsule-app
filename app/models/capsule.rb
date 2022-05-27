@@ -25,7 +25,7 @@ module TimeCapsule
 
       @owner = Account.new(relationships['owner'])
       @collaborators = process_collaborators(relationships['collaborated_letters'])
-      @documents = process_letters(relationships['owned_letters'])
+      @letters = process_letters(relationships['owned_letters'])
     end
 
     def process_policies(policies)
@@ -35,7 +35,7 @@ module TimeCapsule
     def process_letters(letters_info)
       return nil unless letters_info
 
-      letters_info.map { |letter_info| Document.new(letter_info) }
+      letters_info.map { |letter_info| Letter.new(letter_info) }
     end
 
     def process_collaborators(collaborators)
