@@ -23,7 +23,8 @@ module TimeCapsule
             routing.redirect @login_route
           end
 
-          authenticated = AuthenticateAccount.new(App.config).call(**credentials.values)
+          authenticated = AuthenticateAccount.new(App.config)
+                                             .call(**credentials.values)
 
           current_account = Account.new(
             authenticated[:account],
@@ -73,7 +74,7 @@ module TimeCapsule
               routing.redirect @register_route
             end
 
-            VerifyRegistration.new(App.config).call(registration)
+            VerifyRegistration.new(App.config).call(registration.to_h)
 
             flash[:notice] = 'Please check your email for a verification link'
             routing.redirect '/'
@@ -82,6 +83,7 @@ module TimeCapsule
             flash[:error] = 'Our servers are not responding -- please try later'
             routing.redirect @register_route
           rescue StandardError => e
+            puts e.full_message 
             App.logger.error "Could not verify registration: #{e.inspect}"
             flash[:error] = 'Please use English characters for username only'
             routing.redirect @register_route
