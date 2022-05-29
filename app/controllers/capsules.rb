@@ -15,11 +15,11 @@ module TimeCapsule
 
           # GET /capsules/[capsule_id]
           routing.get do
+            binding.irb
             capsule_info = GetCapsule.new(App.config).call(
               @current_account, capsule_id
             )
             capsule = Capsule.new(capsule_info) # Question
-
             view :capsule, locals: {
               current_account: @current_account, capsule:
             }
@@ -56,9 +56,7 @@ module TimeCapsule
         # GET /capsules/
         routing.get do
           capsule_list = GetAllCapsules.new(App.config).call(@current_account)
-
           capsules = Capsules.new(capsule_list)
-
           view :capsules_all, locals: {
             current_user: @current_account, capsules:
           }

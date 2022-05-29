@@ -18,13 +18,13 @@ module TimeCapsule
       message = { email:,
                   username:,
                   password: }
-
       response = HTTP.post(
         "#{@config.API_URL}/accounts/",
         json: message
       )
-
       raise InvalidAccount unless response.code == 201
+
+      response['Id']
     end
   end
 end
