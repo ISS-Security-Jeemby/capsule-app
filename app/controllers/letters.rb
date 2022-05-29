@@ -17,7 +17,6 @@ module TimeCapsule
           letter_info = GetLetter.new(App.config)
                                  .call(@current_account, letter_id)
           letter = Letter.new(letter_info)
-
           view :letter, locals: {
             current_account: @current_account, letter:
           }

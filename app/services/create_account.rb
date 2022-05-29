@@ -24,7 +24,7 @@ module TimeCapsule
       )
       raise InvalidAccount unless response.code == 201
 
-      response['Id']
+      response['id']
     end
   end
 end

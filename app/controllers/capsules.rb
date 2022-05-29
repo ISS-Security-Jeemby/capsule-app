@@ -15,7 +15,6 @@ module TimeCapsule
 
           # GET /capsules/[capsule_id]
           routing.get do
-            binding.irb
             capsule_info = GetCapsule.new(App.config).call(
               @current_account, capsule_id
             )
@@ -24,7 +23,7 @@ module TimeCapsule
               current_account: @current_account, capsule:
             }
           rescue StandardError => e
-            puts "#{e.inspect}\n#{e.backtrace}"
+            puts e.full_message
             flash[:error] = 'Capsule not found'
             routing.redirect @capsules_route
           end
@@ -42,7 +41,6 @@ module TimeCapsule
               capsule_id:,
               letter_data: letter_data.to_h
             )
-
             flash[:notice] = 'Your letter was added'
           rescue StandardError => e
             puts e.inspect
