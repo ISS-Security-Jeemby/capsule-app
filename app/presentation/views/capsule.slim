@@ -1,0 +1,19 @@
+h2
+  == "#{capsule.name}"
+
+dl
+  div class="row"
+    div class="col-xs-3"
+      dt Letters:
+div class="row"
+  div class="col-lg-9"
+    div class="row"
+      div class="col-xs-4"
+          button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newLetterModal" + New Letter
+    div class="row" style="height:10px;"
+  div class="col-lg-3"
+    div class="panel panel-default"
+      div class="panel-heading" Collaborators
+      div class="panel-body"
+       
+include :letter_new_partial
