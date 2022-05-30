@@ -15,7 +15,7 @@ module TimeCapsule
     end
 
     route('auth') do |routing|
-      @oauth_callback = '/auth/sso_callback'
+      @oauth_callback = '/auth/github_callback'
       @login_route = '/auth/login'
       routing.is 'login' do
         # GET /auth/login
@@ -58,8 +58,8 @@ module TimeCapsule
         end
       end
 
-      routing.is 'sso_callback' do
-        # GET /auth/sso_callback
+      routing.is 'github_callback' do
+        # GET /auth/github_callback
         routing.get do
           authorized = AuthorizeGithubAccount
                        .new(App.config)
@@ -73,7 +73,7 @@ module TimeCapsule
           CurrentSession.new(session).current_account = current_account
 
           flash[:notice] = "Welcome #{current_account.username}!"
-          routing.redirect '/projects'
+          routing.redirect '/capsules'
         rescue AuthorizeGithubAccount::UnauthorizedError
           flash[:error] = 'Could not login with Github'
           response.status = 403
