@@ -12,6 +12,7 @@ module TimeCapsule
     plugin :public, root: 'app/presentation/public'
     plugin :multi_route
     plugin :flash
+    plugin :all_verbs
 
     route do |routing|
       response['Content-Type'] = 'text/html; charset=utf-8'

@@ -12,6 +12,15 @@ module TimeCapsule
       routing.on(String) do |letter_id|
         @letter_route = "#{@shared_capsule_route}/#{letter_id}"
 
+        # PUT /letters/[letter_id]
+        routing.post do
+          letter = UpdateLetter.new(App.config)
+                               .call(@current_account, letter_id, routing.params)
+          view :letter, locals: {
+            current_account: @current_account, letter:
+          }
+        end
+
         # GET /letters/[letter_id]
         routing.get do
           letter_info = GetLetter.new(App.config)
