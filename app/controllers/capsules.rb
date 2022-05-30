@@ -12,15 +12,41 @@ module TimeCapsule
 
         routing.on(String) do |capsule_id|
           @capsule_route = "#{@capsules_route}/#{capsule_id}"
+          routing.on 'letters' do
+            routing.on String do |letter_id|
+              # PUT capsules/[capsule_id]/letters/[letter_id]
+              routing.post do
+                letter = UpdateLetter.new(App.config)
+                                     .call(@current_account, letter_id, routing.params)
+                view :letter, locals: {
+                  current_account: @current_account, letter:
+                }
+                routing.redirect @capsule_route
+              end
+
+              # GET capsules/[capsule_id]/letters/[letter_id]
+              routing.get do
+                letter_info = GetLetter.new(App.config)
+                                       .call(@current_account, letter_id)
+                letter = Letter.new(letter_info)
+                view :letter, locals: {
+                  current_account: @current_account, letter:, capsule_id:
+                }
+              end
+            end
+          end
 
           # GET /capsules/[capsule_id]
           routing.get do
             capsule_info = GetCapsule.new(App.config).call(
               @current_account, capsule_id
             )
-            capsule = Capsule.new(capsule_info) # Question
+            capsule = Capsule.new(capsule_info)
+            letters = GetCapsuleLetters.new(App.config).call(
+              @current_account, capsule_id
+            )
             view :capsule, locals: {
-              current_account: @current_account, capsule:
+              current_account: @current_account, capsule:, letters:
             }
           rescue StandardError => e
             puts e.full_message
