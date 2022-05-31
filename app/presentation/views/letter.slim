@@ -1,16 +1,18 @@
 h4 Edit Letter
 div class="body"
 - if letter
-  form role="form" action="/capsules/#{capsule_id}/letters/#{letter.id}" method='post' id='edit-letter-form'
-    div class="form-group"
-      label for='title_input' Title Name:
-      input type='text' name='title' id='title_input' class="form-control" placeholder="Title is required" value="#{letter.title}"
-    div class="form-group mt-2"
-      label for='receiver_input' To:
-      input type='text' name='receiver_id' id='receiver_input' class="form-control" placeholder="List the receiver" value="#{letter.receiver_id}"
-    div class="form-group mt-2"
-      label for='content_input' Content:
-      textarea name='content' id='content_input' class="form-control" placeholder="Write down your messages..."  #{letter.content}
-   
-    button type='submit' class="m-2 btn btn-primary submit" id='registration-form-submit' value='submit' Save
-    a href="/capsules/#{capsule_id}" class="m-2 btn btn-secondary" role="button" Cancel
+  div class="col-lg-9"
+    form role="form" action="/capsules/#{capsule_id}/letters/#{letter.id}" method='post' id='edit-letter-form'
+      div class="form-group"
+        label for='title_input' Title Name:
+        input type='text' name='title' id='title_input' class="form-control" placeholder="Title is required" value="#{letter.title}"
+      div class="form-group mt-2"
+        label for='receiver_input' To:
+        input type='text' name='receiver_id' id='receiver_input' class="form-control" placeholder="List the receiver" value="#{letter.receiver_id}"
+      div class="form-group mt-2"
+        label for='content_input' Content:
+        textarea name='content' id='content_input' class="form-control" placeholder="Write down your messages..."  #{letter.content}
+    
+      button type='submit' class="m-2 btn btn-primary submit" id='registration-form-submit' value='submit' Save
+      a href="/capsules/#{capsule_id}" class="m-2 btn btn-secondary" role="button" Cancel
+  

@@ -15,10 +15,11 @@ module TimeCapsule
 
     def call(current_account:, collaborator:, letter_id:)
       response = HTTP.auth("Bearer #{current_account.auth_token}")
-                     .put("#{api_url}/capsules/2/#{letter_id}/collaborators",
-                          json: { email: collaborator[:email] })
-
+                     .post("#{api_url}/letters/#{letter_id}/collaborators",
+                           json: { email: collaborator[:email] })
       raise CollaboratorNotAdded unless response.code == 200
+
+      JSON.parse(response.to_s)['data']
     end
   end
 end
