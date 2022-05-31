@@ -10,11 +10,11 @@ module TimeCapsule
       routing.on do
         # GET /account/[username]
         routing.get String do |username|
-          account = GetAccountDetails.new(App.config).call(
+          account_info = GetAccountDetails.new(App.config).call(
             @current_account, username
           )
 
-          view :account, locals: { account: account }
+          view :account, locals: { account: account_info }
         rescue GetAccountDetails::InvalidAccount => e
           flash[:error] = e.message
           routing.redirect '/auth/login'

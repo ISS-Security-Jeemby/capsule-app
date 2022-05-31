@@ -4,6 +4,7 @@ require 'roda'
 require_relative './app'
 
 module TimeCapsule
+  # rubocop:disable Metrics/ClassLength
   # Web controller for TimeCapsule API
   class App < Roda
     def gh_oauth_url(config)
@@ -122,7 +123,7 @@ module TimeCapsule
             flash[:error] = 'Our servers are not responding -- please try later'
             routing.redirect @register_route
           rescue StandardError => e
-            puts e.full_message 
+            puts e.full_message
             App.logger.error "Could not verify registration: #{e.inspect}"
             flash[:error] = 'Please use English characters for username only'
             routing.redirect @register_route
@@ -140,4 +141,5 @@ module TimeCapsule
       end
     end
   end
+  # rubocop:enable Metrics/ClassLength
 end
