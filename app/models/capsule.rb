@@ -9,7 +9,7 @@ module TimeCapsule
     def initialize(cap_info)
       process_attributes(cap_info['attributes'])
       process_relationships(cap_info['relationships'])
-      process_policies(cap_info['policies'])
+      # process_policies(cap_info['policies'])
     end
 
     private
@@ -28,9 +28,9 @@ module TimeCapsule
       @documents = process_letters(relationships['owned_letters'])
     end
 
-    def process_policies(policies)
-      @policies = OpenStruct.new(policies)
-    end
+    # def process_policies(policies)
+    #   @policies = OpenStruct.new(policies)
+    # end
 
     def process_letters(letters_info)
       return nil unless letters_info

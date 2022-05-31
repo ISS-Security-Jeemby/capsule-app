@@ -11,7 +11,7 @@ module TimeCapsule
       params do
         required(:title).filled(max_size?: 256, format?: FILENAME_REGEX)
         required(:content).filled(:string)
-        required(:receiver_id).maybe(:string)
+        required(:receiver_id).filled(:string)
       end
     end
   end

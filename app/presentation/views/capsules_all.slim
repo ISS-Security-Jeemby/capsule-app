@@ -6,11 +6,9 @@ table class="table"
   thead
     tr
       th Capsule name
-      th Capsule type
   tbody
     - capsules.all.each do |cap|
       tr
         td 
-          a href="/account/capsules/#{cap.id}" #{cap.name}
-          td 
-            a  #{cap.type}
+          a href="/capsules/#{cap.id}" #{cap.name}
+  

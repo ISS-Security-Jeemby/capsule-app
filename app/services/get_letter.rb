@@ -4,15 +4,15 @@ require 'http'
 
 module TimeCapsule
   # Return a capsule of an account
-  class GetCapsule
+  class GetLetter
     def initialize(config)
       @config = config
     end
 
-    def call(current_account, capsule_id)
+    def call(current_account, letter_id)
       response = HTTP.auth("Bearer #{current_account.auth_token}")
-                     .get("#{@config.API_URL}/capsules/#{capsule_id}")
-      response.code == 200 ? JSON.parse(response.body.to_s)['data'] : nil
+                     .get("#{@config.API_URL}/letters/#{letter_id}")
+      response.code == 200 ? JSON.parse(response.body.to_s)['data']['data'] : nil
     end
   end
 end
