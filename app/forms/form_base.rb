@@ -5,10 +5,10 @@ require 'dry-validation'
 module TimeCapsule
   # Form helpers
   module Form
-    USERNAME_REGEX = /^[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*$/.freeze
-    EMAIL_REGEX = /@/.freeze
-    FILENAME_REGEX = %r{^((?![&\/\\\{\}\|\t]).)*$}.freeze
-    PATH_REGEX = /^((?![&\{\}\|\t]).)*$/.freeze
+    USERNAME_REGEX = /^[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*$/
+    EMAIL_REGEX = /@/
+    FILENAME_REGEX = %r{^((?![&/\\\{\}|\t]).)*$}    # original: %r{^((?![&\/\\\{\}\|\t]).)*$}
+    PATH_REGEX = /^((?![&{}|t]).)*$/                # original: /^((?![&\{\}\|\t]).)*$/
 
     def self.validation_errors(validation)
       validation.errors.to_h.map { |k, v| [k, v].join(' ') }.join('; ')

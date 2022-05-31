@@ -29,7 +29,7 @@ module TimeCapsule
             .post(@config.GH_TOKEN_URL,
                   form: { client_id: @config.GH_CLIENT_ID,
                           client_secret: @config.GH_CLIENT_SECRET,
-                          code: code })
+                          code: })
       raise UnauthorizedError unless challenge_response.status < 400
 
       JSON.parse(challenge_response)['access_token']
@@ -38,7 +38,7 @@ module TimeCapsule
     def get_sso_account_from_api(access_token)
       response =
         HTTP.post("#{@config.API_URL}/auth/sso",
-                  json: { access_token: access_token })
+                  json: { access_token: })
       raise if response.code >= 400
 
       account_info = JSON.parse(response)['data']['attributes']
