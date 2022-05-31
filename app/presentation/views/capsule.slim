@@ -1,13 +1,7 @@
 h2
   == "#{capsule.name}"
 
-dl
-  div class="row"
-    div class="col-xs-3"
-      dt Letters:
-div class="row"
-  div class="col-lg-9"
-  table class="table"
+table class="table"
   thead
     tr
       th Letter name
@@ -17,13 +11,8 @@ div class="row"
         td 
           a href="/capsules/#{capsule.id}/letters/#{letter['data']['attributes']['id']}" #{letter['data']['attributes']['title']}
 
-    div class="row"
-      div class="col-xs-4"
-          button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newLetterModal" + New Letter
-    div class="row" style="height:10px;"
-  div class="col-lg-3"
-    div class="panel panel-default"
-      div class="panel-heading" Collaborators
-      div class="panel-body"
-       
+  div class="row"
+    div class="col-xs-4"
+        button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newLetterModal" + New Letter
+
 include :letter_new_partial
