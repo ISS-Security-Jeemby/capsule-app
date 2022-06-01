@@ -65,8 +65,11 @@ module TimeCapsule
             letters = GetCapsuleLetters.new(App.config).call(
               @current_account, capsule_id
             )
+            collaborators = GetAllCollaborators.new(App.config).call(
+              @current_account, letters:
+            )
             view :capsule, locals: {
-              current_account: @current_account, capsule:, letters:
+              current_account: @current_account, capsule:, letters:, collaborators:
             }
           rescue StandardError => e
             puts e.full_message

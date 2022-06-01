@@ -5,14 +5,26 @@ table class="table"
   thead
     tr
       th Letter name
+      - if capsule.id==2
+        th Add Collaborator
+        th Collaborator
   tbody
-    - letters.each do |letter|
+    - for i in 0..letters.length()-1
       tr
         td 
-          a href="/capsules/#{capsule.id}/letters/#{letter['data']['attributes']['id']}" #{letter['data']['attributes']['title']}
+          a href="/capsules/#{capsule.id}/letters/#{letters[i]['data']['attributes']['id']}" #{letters[i]['data']['attributes']['title']}
+        - if capsule.id==2
+          td
+            button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newCollaboratorModal" + 
+          td
+            - for j in 0..collaborators[i].length()-1
+              button type="button" class="btn btn-secondary" #{collaborators[i][j]}
+      
+      include :collaborator_new_partial
 
   div class="row"
     div class="col-xs-4"
         button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newLetterModal" + New Letter
+
 
 include :letter_new_partial
