@@ -6,10 +6,10 @@ require_relative './app'
 module TimeCapsule
   # Web controller for TimeCapsule API
   class App < Roda
-    def gh_oauth_url(config)
-      url = config.GH_OAUTH_URL
-      client_id = config.GH_CLIENT_ID
-      scope = config.GH_SCOPE
+    def google_oauth_url(config)
+      url = config.GO_OAUTH_URL
+      client_id = config.GO_CLIENT_ID
+      scope = config.GO_SCOPE
 
       "#{url}?client_id=#{client_id}&scope=#{scope}"
     end
@@ -22,6 +22,7 @@ module TimeCapsule
         routing.get do
           view :login, locals: {
             gh_oauth_url: gh_oauth_url(App.config)
+            google_oauth_url: google_oauth_url(App.config)
           }
         end
 
