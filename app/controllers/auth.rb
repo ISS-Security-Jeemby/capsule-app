@@ -8,14 +8,15 @@ module TimeCapsule
   class App < Roda
     def google_oauth_url(config)
       url = config.GO_OAUTH_URL
+      scopes = ['https://www.googleapis.com/auth/userinfo.profile',
+                'https://www.googleapis.com/auth/userinfo.email']
       params = ["client_id=#{config.GO_CLIENT_ID}",
                 "redirect_uri=#{config.APP_URL}/auth/google-callback",
                 'response_type=code',
-                'scope=https://www.googleapis.com/auth/userinfo.profile']
+                "scope= #{scopes.join(' ')}"]
 
       "#{url}?#{params.join('&')}"
     end
-
     def gh_oauth_url(config)
       url = config.GH_OAUTH_URL
       client_id = config.GH_CLIENT_ID
