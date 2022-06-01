@@ -30,6 +30,7 @@ describe 'Test Service Objects' do
              .to_return(body: auth_return_json,
                         headers: { 'content-type' => 'application/json' })
       auth = TimeCapsule::AuthenticateAccount.new(app.config).call(**@credentials)
+
       account = auth[:account]['attributes']
       _(account).wont_be_nil
       _(account['username']).must_equal @api_account[:username]
