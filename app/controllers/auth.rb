@@ -6,7 +6,20 @@ require_relative './app'
 module TimeCapsule
   # rubocop:disable Metrics/ClassLength
   # Web controller for TimeCapsule API
+  # rubocop:disable Metrics/ClassLength
   class App < Roda
+    def google_oauth_url(config)
+      url = config.GO_OAUTH_URL
+      scopes = ['https://www.googleapis.com/auth/userinfo.profile',
+                'https://www.googleapis.com/auth/userinfo.email']
+      params = ["client_id=#{config.GO_CLIENT_ID}",
+                "redirect_uri=#{config.APP_URL}/auth/google-callback",
+                'response_type=code',
+                "scope= #{scopes.join(' ')}"]
+
+      "#{url}?#{params.join('&')}"
+    end
+
     def gh_oauth_url(config)
       url = config.GH_OAUTH_URL
       client_id = config.GH_CLIENT_ID
@@ -22,7 +35,8 @@ module TimeCapsule
         # GET /auth/login
         routing.get do
           view :login, locals: {
-            gh_oauth_url: gh_oauth_url(App.config)
+            gh_oauth_url: gh_oauth_url(App.config),
+            google_oauth_url: google_oauth_url(App.config)
           }
         end
 
@@ -77,6 +91,34 @@ module TimeCapsule
           routing.redirect '/capsules'
         rescue AuthorizeGithubAccount::UnauthorizedError
           flash[:error] = 'Could not login with Github'
+          response.status = 403
+          routing.redirect @login_route
+        rescue StandardError => e
+          puts "SSO LOGIN ERROR: #{e.inspect}\n#{e.backtrace}"
+          flash[:error] = 'Unexpected API Error'
+          response.status = 500
+          routing.redirect @login_route
+        end
+      end
+
+      routing.is 'google-callback' do
+        # GET /auth/github_callback
+        routing.get do
+          authorized = AuthorizeGoogleAccount
+                       .new(App.config)
+                       .call(routing.params['code'])
+
+          current_account = Account.new(
+            authorized[:account],
+            authorized[:auth_token]
+          )
+
+          CurrentSession.new(session).current_account = current_account
+
+          flash[:notice] = "Welcome #{current_account.username}!"
+          routing.redirect '/capsules'
+        rescue AuthorizeGithubAccount::UnauthorizedError
+          flash[:error] = 'Could not login with Google'
           response.status = 403
           routing.redirect @login_route
         rescue StandardError => e
@@ -143,3 +185,4 @@ module TimeCapsule
   end
   # rubocop:enable Metrics/ClassLength
 end
+# rubocop:enable Metrics/ClassLength
