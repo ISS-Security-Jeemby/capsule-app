@@ -8,10 +8,12 @@ module TimeCapsule
   class App < Roda
     def google_oauth_url(config)
       url = config.GO_OAUTH_URL
-      client_id = config.GO_CLIENT_ID
-      scope = config.GO_SCOPE
+      params = ["client_id=#{config.GO_CLIENT_ID}",
+                "redirect_uri=#{config.APP_URL}/auth/google_callback",
+                'response_type=code',
+                "scope=https://www.googleapis.com/auth/userinfo.profile"]
 
-      "#{url}?client_id=#{client_id}&scope=#{scope}"
+      "#{url}?#{params.join('&')}"
     end
     def gh_oauth_url(config)
       url = config.GH_OAUTH_URL
@@ -29,7 +31,7 @@ module TimeCapsule
         # GET /auth/login
         routing.get do
           view :login, locals: {
-            gh_oauth_url: gh_oauth_url(App.config)
+            gh_oauth_url: gh_oauth_url(App.config),
             google_oauth_url: google_oauth_url(App.config)
           }
         end

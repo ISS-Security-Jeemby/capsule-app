@@ -29,7 +29,9 @@ module TimeCapsule
             .post(@config.GO_TOKEN_URL,
                   form: { client_id: @config.GO_CLIENT_ID,
                           client_secret: @config.GO_CLIENT_SECRET,
-                          code: code })
+                          grant_type: 'authorization_code',
+                          redirect_uri: "#{@config.APP_URL}/auth/google_callback",
+                          response_type: code })
       raise UnauthorizedError unless challenge_response.status < 400
 
       JSON.parse(challenge_response)['access_token']
