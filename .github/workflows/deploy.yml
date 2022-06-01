@@ -30,7 +30,7 @@ jobs:
         run: sudo apt-get -yqq install libsodium23
       
       - name: Check style and performance
-        run: rubocop
+        run: bundle exec rubocop
 
       # - name: Setup test database
       #   run: |
