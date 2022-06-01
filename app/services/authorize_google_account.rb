@@ -23,6 +23,7 @@ module TimeCapsule
 
     private
 
+    # rubocop:disable Style/HashSyntax
     def get_access_token_from_google(code)
       challenge_response =
         HTTP.headers(accept: 'application/json')
@@ -30,8 +31,8 @@ module TimeCapsule
                   form: { client_id: @config.GO_CLIENT_ID,
                           client_secret: @config.GO_CLIENT_SECRET,
                           grant_type: 'authorization_code',
-                          redirect_uri: "#{@config.APP_URL}/auth/google_callback",
-                          response_type: code })
+                          redirect_uri: "#{@config.APP_URL}/auth/google-callback",
+                          code: code })
       raise UnauthorizedError unless challenge_response.status < 400
 
       JSON.parse(challenge_response)['access_token']
@@ -50,5 +51,6 @@ module TimeCapsule
         auth_token: account_info['auth_token']
       }
     end
+    # rubocop:enable Style/HashSyntax
   end
 end

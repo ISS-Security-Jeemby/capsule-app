@@ -9,12 +9,13 @@ module TimeCapsule
     def google_oauth_url(config)
       url = config.GO_OAUTH_URL
       params = ["client_id=#{config.GO_CLIENT_ID}",
-                "redirect_uri=#{config.APP_URL}/auth/google_callback",
+                "redirect_uri=#{config.APP_URL}/auth/google-callback",
                 'response_type=code',
-                "scope=https://www.googleapis.com/auth/userinfo.profile"]
+                'scope=https://www.googleapis.com/auth/userinfo.profile']
 
       "#{url}?#{params.join('&')}"
     end
+
     def gh_oauth_url(config)
       url = config.GH_OAUTH_URL
       client_id = config.GH_CLIENT_ID
@@ -22,7 +23,6 @@ module TimeCapsule
 
       "#{url}?client_id=#{client_id}&scope=#{scope}"
     end
-
 
     route('auth') do |routing|
       @oauth_callback = '/auth/github_callback'
@@ -97,7 +97,7 @@ module TimeCapsule
         end
       end
 
-      routing.is 'google_callback' do
+      routing.is 'google-callback' do
         # GET /auth/github_callback
         routing.get do
           authorized = AuthorizeGoogleAccount
@@ -161,7 +161,7 @@ module TimeCapsule
             flash[:error] = 'Our servers are not responding -- please try later'
             routing.redirect @register_route
           rescue StandardError => e
-            puts e.full_message 
+            puts e.full_message
             App.logger.error "Could not verify registration: #{e.inspect}"
             flash[:error] = 'Please use English characters for username only'
             routing.redirect @register_route

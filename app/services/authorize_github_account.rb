@@ -23,6 +23,7 @@ module TimeCapsule
 
     private
 
+    # rubocop:disable Style/HashSyntax
     def get_access_token_from_github(code)
       challenge_response =
         HTTP.headers(accept: 'application/json')
@@ -48,5 +49,6 @@ module TimeCapsule
         auth_token: account_info['auth_token']
       }
     end
+    # rubocop:enable Style/HashSyntax
   end
 end
