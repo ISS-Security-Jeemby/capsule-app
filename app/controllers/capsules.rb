@@ -68,7 +68,6 @@ module TimeCapsule
             collaborators = GetAllCollaborators.new(App.config).call(
               @current_account, letters:
             )
-            binding.irb
             view :capsule, locals: {
               current_account: @current_account, capsule:, letters:, collaborators:
             }
