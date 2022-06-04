@@ -3,4 +3,20 @@
     width:100%;
     display:block;
   }
-  
+
+.line-through {
+  display: flex;
+  flex-direction: row;
+}
+.line-through:before, .line-through:after{
+  content: "";
+  flex: 1 1;
+  border-bottom: 1px solid;
+  margin: auto;
+}
+.line-through:before {
+  margin-right: 10px
+}
+.line-through:after {
+  margin-left: 10px
+}
