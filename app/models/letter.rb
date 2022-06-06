@@ -34,7 +34,7 @@ module TimeCapsule
     end
 
     def process_policies(policies)
-      @policies = OpenStruct.new(policies)
+      @policies = Struct.new(policies)
     end
 
     def process_collaborators(collaborators)
