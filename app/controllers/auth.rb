@@ -6,7 +6,6 @@ require_relative './app'
 module TimeCapsule
   # rubocop:disable Metrics/ClassLength
   # Web controller for TimeCapsule API
-  # rubocop:disable Metrics/ClassLength
   class App < Roda
     def google_oauth_url(config)
       url = config.GO_OAUTH_URL
@@ -24,7 +23,6 @@ module TimeCapsule
       url = config.GH_OAUTH_URL
       client_id = config.GH_CLIENT_ID
       scope = config.GH_SCOPE
-
       "#{url}?client_id=#{client_id}&scope=#{scope}"
     end
 
@@ -185,4 +183,3 @@ module TimeCapsule
   end
   # rubocop:enable Metrics/ClassLength
 end
-# rubocop:enable Metrics/ClassLength
