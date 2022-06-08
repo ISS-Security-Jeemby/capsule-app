@@ -26,12 +26,26 @@ module TimeCapsule
           raise Form.message_values(passwords) if passwords.failure?
 
           new_account = SecureMessage.decrypt(registration_token)
-          account = CreateAccount.new(App.config).call(
+          account_id = CreateAccount.new(App.config).call(
             email: new_account['email'],
             username: new_account['username'],
             password: routing.params['password']
           )
-          CreateCapsules.new(App.config).call(current_account: account)
+
+          # authenticate the current created account and get the auth_token
+          authenticated = AuthenticateAccount.new(App.config)
+                                             .call(
+                                               username: new_account['username'],
+                                               password: routing.params['password']
+                                             )
+          current_account = Account.new(
+            authenticated[:account],
+            authenticated[:auth_token],
+            account_id
+          )
+
+          # create capsules after creating account
+          CreateCapsules.new(App.config).call(current_account:)
           flash[:notice] = 'Account created! Please login'
           routing.redirect '/auth/login'
         rescue CreateAccount::InvalidAccount => e
