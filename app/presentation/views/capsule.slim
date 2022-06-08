@@ -5,26 +5,33 @@ table class="table"
   thead
     tr
       th Letter name
+      th Receiver
       - if capsule.id==2
         th Add Collaborator
         th Collaborator
+      th Status
   tbody
     - for i in 0..letters.length()-1
       tr
         td 
           a href="/capsules/#{capsule.id}/letters/#{letters[i]['data']['attributes']['id']}" #{letters[i]['data']['attributes']['title']}
+        td 
+          p #{letters[i]['data']['attributes']['receiver_id'] unless nil}
         - if capsule.id==2
           td
             button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newCollaboratorModal" + 
           td
             - for j in 0..collaborators[i].length()-1
               button type="button" class="btn btn-secondary" #{collaborators[i][j]}
+        td 
+          p #{letters[i]['data']['attributes']['status']}
       
       include :collaborator_new_partial
 
+- if capsule.type != 3
   div class="row"
     div class="col-xs-4"
         button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newLetterModal" + New Letter
 
-
-include :letter_new_partial
+- if capsule.type != 3
+  include :letter_new_partial
