@@ -5,7 +5,7 @@ table class="table"
   thead
     tr
       th Letter name
-      - if capsule.id==2
+      - if capsule.type==2
         th Add Collaborator
         th Collaborator
   tbody
@@ -13,7 +13,7 @@ table class="table"
       tr
         td 
           a href="/capsules/#{capsule.id}/letters/#{letters[i]['data']['attributes']['id']}" #{letters[i]['data']['attributes']['title']}
-        - if capsule.id==2
+        - if capsule.type==2
           td
             button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newCollaboratorModal" + 
           td
