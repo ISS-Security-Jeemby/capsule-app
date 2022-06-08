@@ -32,14 +32,19 @@ module TimeCapsule
             password: routing.params['password']
           )
 
+          # authenticate the current created account and get the auth_token
           authenticated = AuthenticateAccount.new(App.config)
-                                             .call(username: new_account['username'], password: routing.params['password'])
+                                             .call(
+                                               username: new_account['username'],
+                                               password: routing.params['password']
+                                             )
           current_account = Account.new(
             authenticated[:account],
             authenticated[:auth_token],
             account_id
           )
 
+          # create capsules after creating account
           CreateCapsules.new(App.config).call(current_account:)
           flash[:notice] = 'Account created! Please login'
           routing.redirect '/auth/login'
