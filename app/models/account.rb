@@ -3,12 +3,13 @@
 module TimeCapsule
   # Behaviors of the currently logged in account
   class Account
-    def initialize(account_info, auth_token)
+    def initialize(account_info, auth_token, id = nil)
       @account_info = account_info
       @auth_token = auth_token
+      @id = id
     end
 
-    attr_reader :account_info, :auth_token
+    attr_reader :account_info, :auth_token, :id
 
     def username
       @account_info ? @account_info['username'] : nil
