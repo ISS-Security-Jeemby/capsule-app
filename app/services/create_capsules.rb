@@ -14,8 +14,9 @@ module TimeCapsule
     end
 
     def call(current_account:)
-      config_url = "#{api_url}/capsules/#{current_account}"
-      response = HTTP.post(config_url)
+      config_url = "#{api_url}/capsules/#{current_account.id}/"
+      response = HTTP.auth("Bearer #{current_account.auth_token}")
+                      .post(config_url)
       response.code == 201 ? JSON.parse(response.body.to_s) : raise
     end
   end
