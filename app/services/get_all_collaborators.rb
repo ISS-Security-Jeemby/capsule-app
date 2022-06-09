@@ -11,6 +11,7 @@ class GetAllCollaborators
   def call(current_account, letters:)
     response = HTTP.auth("Bearer #{current_account.auth_token}")
                    .get("#{@config.API_URL}/letters/collaborators", json: letters)
+    binding.irb
     response.code == 200 ? JSON.parse(response.body.to_s)['data'] : nil
   end
 end
