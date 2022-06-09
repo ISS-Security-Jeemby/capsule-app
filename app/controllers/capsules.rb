@@ -27,7 +27,7 @@ module TimeCapsule
               routing.get do
                 letter_info = GetLetter.new(App.config)
                                        .call(@current_account, letter_id)
-                letter = Letter.new(letter_info)
+                # letter = Letter.new(letter_info)
                 collaborators = GetLetterCollaborators.new(App.config).call(
                   @current_account, letter_id:
                 )
@@ -70,7 +70,7 @@ module TimeCapsule
             letters = GetCapsuleLetters.new(App.config).call(
               @current_account, capsule_id
             )
-            status_code = { 1 => "Draft", 2 => "Ready To Be Send", 3 => "Sended" }
+            status_code = { 1 => 'Draft', 2 => 'Ready To Be Send', 3 => 'Sended' }
             letters.each do |letter|
               letter['data']['attributes']['status'] = status_code[letter['data']['attributes']['status']]
             end
