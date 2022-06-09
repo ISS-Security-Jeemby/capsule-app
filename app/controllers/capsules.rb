@@ -31,7 +31,7 @@ module TimeCapsule
                 collaborators = GetLetterCollaborators.new(App.config).call(
                   @current_account, letter_id:
                 )
-                letter = letter[:data]['attributes']
+                letter = letter_info['attributes']
                 view :letter, locals: {
                   current_account: @current_account, letter:, capsule_id:, collaborators:
                 }
@@ -72,7 +72,6 @@ module TimeCapsule
             collaborators = GetAllCollaborators.new(App.config).call(
               @current_account, letters:
             )
-            binding.irb
             view :capsule, locals: {
               current_account: @current_account, capsule:, letters:, collaborators:
             }
