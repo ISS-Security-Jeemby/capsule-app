@@ -26,7 +26,7 @@ table class="table"
               button type="button" class="btn btn-secondary" #{collaborators[i][j]}
 
             - if letters[i]['policies']['can_add_collaborators']
-              button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newCollaboratorModal" + 
+              button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newCollaboratorModal#{letters[i]['attributes']['id']}" + 
               include :collaborator_new_partial
         td 
           p #{ letters[i]['attributes']['receiver_id'].empty? ? "N/A" : letters[i]['attributes']['receiver_id'] }
