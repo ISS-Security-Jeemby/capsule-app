@@ -28,9 +28,10 @@ module TimeCapsule
                 letter_info = GetLetter.new(App.config)
                                        .call(@current_account, letter_id)
                 letter = Letter.new(letter_info)
-                collaborators = GetAllCollaborators.new(App.config).call(
-                  @current_account, letter:
+                collaborators = GetLetterCollaborators.new(App.config).call(
+                  @current_account, letter_id:
                 )
+                letter = letter_info['attributes']
                 view :letter, locals: {
                   current_account: @current_account, letter:, capsule_id:, collaborators:
                 }
