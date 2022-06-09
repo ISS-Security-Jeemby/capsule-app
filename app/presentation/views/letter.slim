@@ -16,5 +16,8 @@ div class="row mt-4"
         button type='submit' class="mr-2 btn btn-primary submit" id='registration-form-submit' value='submit' Save
         a href="/capsules/#{capsule_id}" class="m-2 ml-2 btn btn-secondary" role="button" Cancel
     div class="col-3"
-      h4 Collaborators
-      
+
+      h4 Collaborators 
+      - collaborators.each do |collaborator|
+        div #{collaborator}
+  

@@ -27,13 +27,11 @@ module TimeCapsule
               routing.get do
                 letter_info = GetLetter.new(App.config)
                                        .call(@current_account, letter_id)
-                # letter = Letter.new(letter_info)
-                letter = { data: letter_info }
-                collaborators = GetAllCollaborators.new(App.config).call(
-                  @current_account, letters: letter
+                letter = Letter.new(letter_info)
+                collaborators = GetLetterCollaborators.new(App.config).call(
+                  @current_account, letter_id:
                 )
                 letter = letter[:data]['attributes']
-                binding.irb
                 view :letter, locals: {
                   current_account: @current_account, letter:, capsule_id:, collaborators:
                 }

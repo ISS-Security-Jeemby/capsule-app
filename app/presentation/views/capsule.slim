@@ -17,13 +17,13 @@ table class="table"
         - if capsule.type==2
           td
             button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newCollaboratorModal" + 
+            include :collaborator_new_partial
           td
             - for j in 0..collaborators[i].length()-1
               button type="button" class="btn btn-secondary" #{collaborators[i][j]}
         td 
           p #{letters[i]['data']['attributes']['status']}
       
-      include :collaborator_new_partial
 
 - if capsule.type != 3
   div class="row"
