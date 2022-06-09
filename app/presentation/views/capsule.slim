@@ -19,24 +19,27 @@ table class="table"
     - for i in 0..letters.length()-1
       tr
         td 
-          p #{letters[i]['data']['attributes']['title']}
+          p #{letters[i]['attributes']['title']}
         - if capsule.type==2
           td
             - for j in 0..collaborators[i].length()-1
               button type="button" class="btn btn-secondary" #{collaborators[i][j]}
 
-            button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newCollaboratorModal" + 
-            include :collaborator_new_partial
+            - if letters[i]['policies']['can_add_collaborators']
+              button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newCollaboratorModal" + 
+              include :collaborator_new_partial
         td 
-          p #{ letters[i]['data']['attributes']['receiver_id'].empty? ? "N/A" : letters[i]['data']['attributes']['receiver_id'] }
+          p #{ letters[i]['attributes']['receiver_id'].empty? ? "N/A" : letters[i]['attributes']['receiver_id'] }
         td
-          p #{letters[i]['data']['attributes']['status']}
-        td 
-          button type="button" class="btn btn-primary" onclick="window.location.href='/capsules/#{capsule.id}/letters/#{letters[i]['data']['attributes']['id']}'" Edit
-          '
-          button type="button" class="btn btn-success" onclick="window.location.href='/capsules/#{capsule.id}/letters/#{letters[i]['data']['attributes']['id']}'" Send
-          '
-          button type="button" class="btn btn-danger" onclick="window.location.href='/capsules/#{capsule.id}/letters/#{letters[i]['data']['attributes']['id']}'" Delete
+          p #{letters[i]['attributes']['status']}
+        td
+          - if letters[i]['policies']['can_edit']
+            button type="button" class="btn btn-primary" onclick="window.location.href='/capsules/#{capsule.id}/letters/#{letters[i]['attributes']['id']}'" Edit
+            '
+            button type="button" class="btn btn-success" onclick="window.location.href='/capsules/#{capsule.id}/letters/#{letters[i]['attributes']['id']}'" Send
+          - if letters[i]['policies']['can_delete']
+            '
+            button type="button" class="btn btn-danger" onclick="window.location.href='/capsules/#{capsule.id}/letters/#{letters[i]['attributes']['id']}'" Delete
 
 - if capsule.type != 3
   include :letter_new_partial
