@@ -7,7 +7,6 @@ module TimeCapsule
   class App < Roda
     route('letters') do |routing|
       routing.redirect '/auth/login' unless @current_account.logged_in?
-      @shared_capsule_route = '/capsules/2'
 
       routing.on(String) do |letter_id|
         # POST /letters/[letter_id]/collaborators
@@ -33,11 +32,13 @@ module TimeCapsule
               collaborator: collaborator_info,
               letter_id:
             )
-            flash[:error] = task_res.instance_of?(String) ? task_res : task[:message]
+            task_res.instance_of?(String) ? flash[:error] = task_res : flash[:notice] = task[:message]
 
           rescue StandardError
             flash[:error] = 'Could not find collaborator'
           ensure
+            shared_capsule_id = GetAllCapsules.new(App.config).call(@current_account)[1]['attributes']['id']
+            @shared_capsule_route = "/capsules/#{shared_capsule_id}"
             routing.redirect @shared_capsule_route
           end
         end
