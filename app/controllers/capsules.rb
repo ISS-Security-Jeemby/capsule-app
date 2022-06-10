@@ -27,37 +27,62 @@ module TimeCapsule
             end
 
             routing.on String do |letter_id|
-              # routing.on String do |view_or_edit|
-              #   # GET capsules/[capsule_id]/letters/[letter_id]/[view_or_edit]
-              #   routing.get do
-              #     letter = GetLetter.new(App.config)
-              #                       .call(@current_account, letter_id)
-              #     collaborators = GetLetterCollaborators.new(App.config).call(
-              #       @current_account, letter_id:
-              #     )
-              #     capsule = GetCapsule.new(App.config)
-              #                         .call(@current_account, capsule_id)
 
-              #     # change the letter status when receiver open first time
-              #     if view_or_edit == 'view' && letter['status'] == 2
-              #       UpdateLetter.new(App.config)
-              #                   .call(@current_account, letter['id'], {}, 3)
-              #     end
-              #     is_view = (view_or_edit == 'view' ? view_or_edit : '')
+              # GET capsules/[capsule_id]/letters/[letter_id]/view
+              routing.on 'view' do
+                routing.get do
 
-              #     view :letter, locals: {
-              #       current_account: @current_account, letter:, capsule: capsule['attributes'], collaborators:, is_view:
-              #     }
-              #   end
-              # end
+                  letter = GetLetter.new(App.config)
+                      .call(@current_account, letter_id)
+                  collaborators = GetLetterCollaborators.new(App.config).call(
+                    @current_account, letter_id:
+                  )
+                  capsule = GetCapsule.new(App.config)
+                      .call(@current_account, capsule_id)
 
-              # routing.on 'delete_letter' do
-              #   routing.delete do
-              #     binding.pry
-              #     # routing.redirect @capsule_route
-              #   end
-              # end
+                  # change the letter status when receiver open first time
+                  if letter['status'] == 2
+                    UpdateLetter.new(App.config)
+                        .call(@current_account, letter['id'], {}, 3)
+                  end
+                  is_view =  'view'
 
+                  view :letter, locals: {
+                    current_account: @current_account, letter:, capsule: capsule['attributes'], collaborators:, is_view:
+                  }
+                end
+              end
+
+              # GET capsules/[capsule_id]/letters/[letter_id]/edit
+              routing.on 'edit' do
+                
+                routing.get do
+                  letter = GetLetter.new(App.config)
+                                    .call(@current_account, letter_id)
+                  collaborators = GetLetterCollaborators.new(App.config).call(
+                    @current_account, letter_id:
+                  )
+                  capsule = GetCapsule.new(App.config)
+                                      .call(@current_account, capsule_id)
+
+                  is_view =  ''
+                  view :letter, locals: {
+                    current_account: @current_account, letter:, capsule: capsule['attributes'], collaborators:, is_view:
+                  }
+                end
+              end
+
+              # GET capsules/[capsule_id]/letters/[letter_id]/delete
+              routing.on 'delete' do
+                routing.get do
+                  letter = DeleteLetter.new(App.config)
+                      .call(@current_account, letter_id)
+                  view :letter, locals: {
+                     current_account: @current_account, letter:
+                  }
+                  routing.redirect @capsule_route
+                end
+              end
 
               # PUT capsules/[capsule_id]/letters/[letter_id]
               routing.post do
@@ -69,19 +94,6 @@ module TimeCapsule
                   current_account: @current_account, letter:
                 }
                 routing.redirect @capsule_route
-              end
-
-              routing.on 'delete' do
-                routing.get do
-
-                  letter = DeleteLetter.new(App.config)
-                      .call(@current_account, letter_id)
-                  view :letter, locals: {
-                     current_account: @current_account, letter:
-                  }
-                  routing.redirect @capsule_route
-
-                end
               end
             end
 
