@@ -33,13 +33,17 @@ table class="table"
         td
           p #{letters[i]['attributes']['status']}
         td
-          - if letters[i]['policies']['can_edit']
-            button type="button" class="btn btn-primary" onclick="window.location.href='/capsules/#{capsule.id}/letters/#{letters[i]['attributes']['id']}'" Edit
-            '
-            button type="button" class="btn btn-success" onclick="window.location.href='/capsules/#{capsule.id}/letters/#{letters[i]['attributes']['id']}'" Send
-          - if letters[i]['policies']['can_delete']
-            '
-            button type="button" class="btn btn-danger" onclick="window.location.href='/capsules/#{capsule.id}/letters/#{letters[i]['attributes']['id']}'" Delete
+          - if capsule.type!=3 && letters[i]['attributes']['status']=="Draft"
+            - if letters[i]['policies']['can_edit']
+              button type="button" class="btn btn-primary" onclick="window.location.href='/capsules/#{capsule.id}/letters/#{letters[i]['attributes']['id']}/edit'" Edit
+              '
+              button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#sendLetterModal#{letters[i]['attributes']['id']}" Send
+              include :send_letter_partial
+            - if letters[i]['policies']['can_delete']
+              '
+              button type="button" class="btn btn-danger" onclick="window.location.href=''" Delete
+          - if capsule.type==3 && letters[i]['policies']['can_view']
+            button type="button" class="btn btn-primary" onclick="window.location.href='/capsules/#{capsule.id}/letters/#{letters[i]['attributes']['id']}/view'" View
 
 - if capsule.type != 3
   include :letter_new_partial

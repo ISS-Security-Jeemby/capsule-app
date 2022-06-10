@@ -3,6 +3,7 @@
 require 'roda'
 
 module TimeCapsule
+  # rubocop:disable Metrics/ClassLength
   # Web controller for TimeCapsule API
   class App < Roda
     route('capsules') do |routing|
@@ -12,7 +13,44 @@ module TimeCapsule
         routing.on(String) do |capsule_id|
           @capsule_route = "#{@capsules_route}/#{capsule_id}"
           routing.on 'letters' do
+            routing.on('status') do
+              routing.on(String) do |to_status|
+                # PUT capsules/[capsule_id]/letters/status/[to_status]
+                routing.post do
+                  letter_id = routing.params['id']
+                  routing.params.delete('id')
+                  UpdateLetter.new(App.config)
+                              .call(@current_account, letter_id, routing.params, to_status)
+                  routing.redirect @capsule_route
+                end
+              end
+            end
+
             routing.on String do |letter_id|
+              routing.on String do |view_or_edit|
+                # GET capsules/[capsule_id]/letters/[letter_id]/[view_or_edit]
+                routing.get do
+                  letter = GetLetter.new(App.config)
+                                    .call(@current_account, letter_id)
+                  collaborators = GetLetterCollaborators.new(App.config).call(
+                    @current_account, letter_id:
+                  )
+                  capsule = GetCapsule.new(App.config)
+                                      .call(@current_account, capsule_id)
+
+                  # change the letter status when receiver open first time
+                  if view_or_edit == 'view' && letter['status'] == 2
+                    UpdateLetter.new(App.config)
+                                .call(@current_account, letter['id'], {}, 3)
+                  end
+                  is_view = (view_or_edit == 'view' ? view_or_edit : '')
+
+                  view :letter, locals: {
+                    current_account: @current_account, letter:, capsule: capsule['attributes'], collaborators:, is_view:
+                  }
+                end
+              end
+
               # PUT capsules/[capsule_id]/letters/[letter_id]
               routing.post do
                 letter = UpdateLetter.new(App.config)
@@ -21,20 +59,6 @@ module TimeCapsule
                   current_account: @current_account, letter:
                 }
                 routing.redirect @capsule_route
-              end
-
-              # GET capsules/[capsule_id]/letters/[letter_id]
-              routing.get do
-                letter_info = GetLetter.new(App.config)
-                                       .call(@current_account, letter_id)
-                # letter = Letter.new(letter_info)
-                collaborators = GetLetterCollaborators.new(App.config).call(
-                  @current_account, letter_id:
-                )
-                letter = letter_info['attributes']
-                view :letter, locals: {
-                  current_account: @current_account, letter:, capsule_id:, collaborators:
-                }
               end
             end
 
@@ -69,9 +93,16 @@ module TimeCapsule
             capsule = Capsule.new(capsule_info)
 
             # get letters
-            letters = GetCapsuleLetters.new(App.config).call(
-              @current_account, capsule_id
-            )
+            letters = if capsule.type == 3
+                        # get received letters
+                        GetReceivedLetters.new(App.config).call(
+                          @current_account, capsule_id
+                        )
+                      else
+                        GetCapsuleLetters.new(App.config).call(
+                          @current_account, capsule_id
+                        )
+                      end
             status_code = { 1 => 'Draft', 2 => 'Sended', 3 => 'Reciever Recieved' }
             letters.each do |letter|
               letter['attributes']['status'] = status_code[letter['attributes']['status']]
@@ -103,4 +134,5 @@ module TimeCapsule
       end
     end
   end
+  # rubocop:enable Metrics/ClassLength
 end
