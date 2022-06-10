@@ -18,8 +18,8 @@ module TimeCapsule
                 routing.post do
                   letter_id = routing.params['id']
                   routing.params.delete('id')
-                  letter = UpdateLetter.new(App.config)
-                                      .call(@current_account, letter_id, routing.params, to_status)
+                  UpdateLetter.new(App.config)
+                              .call(@current_account, letter_id, routing.params, to_status)
                   routing.redirect @capsule_route
                 end
               end
