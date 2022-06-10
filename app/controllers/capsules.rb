@@ -12,6 +12,19 @@ module TimeCapsule
         routing.on(String) do |capsule_id|
           @capsule_route = "#{@capsules_route}/#{capsule_id}"
           routing.on 'letters' do
+            routing.on('status') do
+              routing.on(String) do |to_status|
+                # PUT capsules/[capsule_id]/letters/status/[to_status]
+                routing.post do
+                  letter_id = routing.params['id']
+                  routing.params.delete('id')
+                  letter = UpdateLetter.new(App.config)
+                                      .call(@current_account, letter_id, routing.params, to_status)
+                  routing.redirect @capsule_route
+                end
+              end
+            end
+
             routing.on String do |letter_id|
               # PUT capsules/[capsule_id]/letters/[letter_id]
               routing.post do
@@ -25,15 +38,16 @@ module TimeCapsule
 
               # GET capsules/[capsule_id]/letters/[letter_id]
               routing.get do
-                letter_info = GetLetter.new(App.config)
-                                       .call(@current_account, letter_id)
-                # letter = Letter.new(letter_info)
+                letter = GetLetter.new(App.config)
+                                  .call(@current_account, letter_id)
                 collaborators = GetLetterCollaborators.new(App.config).call(
                   @current_account, letter_id:
                 )
-                letter = letter_info['attributes']
+                capsule = GetCapsule.new(App.config)
+                                    .call(@current_account, capsule_id)
+
                 view :letter, locals: {
-                  current_account: @current_account, letter:, capsule_id:, collaborators:
+                  current_account: @current_account, letter:, capsule: capsule['attributes'], collaborators:
                 }
               end
             end

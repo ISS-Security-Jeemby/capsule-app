@@ -2,7 +2,7 @@ div class="row mt-4"
   - if letter
     div class="col-9"
       h4 Edit Letter
-      form role="form" action="/capsules/#{capsule_id}/letters/#{letter['id']}" method='post' id='edit-letter-form'
+      form role="form" action="/capsules/#{capsule['id']}/letters/#{letter['id']}" method='post' id='edit-letter-form'
         div class="form-group"
           label for='title_input' Title Name:
           input type='text' name='title' id='title_input' class="form-control" placeholder="Title is required" value="#{letter['title']}"
@@ -14,10 +14,11 @@ div class="row mt-4"
           textarea name='content' id='content_input' class="form-control" placeholder="Write down your messages..."  #{letter['content']}
       
         button type='submit' class="mr-2 btn btn-primary submit" id='registration-form-submit' value='submit' Save
-        a href="/capsules/#{capsule_id}" class="m-2 ml-2 btn btn-secondary" role="button" Cancel
-    div class="col-3"
+        a href="/capsules/#{capsule['id']}" class="m-2 ml-2 btn btn-secondary" role="button" Cancel
 
-      h4 Collaborators 
-      - collaborators.each do |collaborator|
-        div #{collaborator}
+    - if capsule['type'] == 2
+      div class="col-3"
+        h4 Collaborators 
+        - collaborators.each do |collaborator|
+          div #{collaborator}
   

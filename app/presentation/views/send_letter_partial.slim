@@ -1,0 +1,28 @@
+div id="sendLetterModal#{letters[i]['attributes']['id']}" class="modal fade" role="dialog"
+  div class="modal-dialog"
+    div class="modal-content"
+      div class="modal-header"
+        h4 Send The Letter to Receiver
+        button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+      div class="modal-body"
+        form role="form" action="/capsules/#{capsule.id}/letters/status/2" method='post' id='new-collaborator-form'
+          p 
+            b Sended Letter:
+            '
+            | #{letters[i]['attributes']['title']}
+          p 
+            b Receiver:
+            '
+            | #{letters[i]['attributes']['receiver_id']}
+
+          / div class="form-group"
+          /   label for='date_input' 
+          /     b Received Date:
+          /   input type='datetime-local' name='send_at' id='date_input' class="form-control"
+          br
+
+          input type='hidden' name='id' value="#{letters[i]['attributes']['id']}"
+
+          button type='submit' class="btn btn-primary submit" id='registration-form-submit' value='submit' Add
+          '
+          button type="button" class="ml-2 btn btn-secondary" data-bs-dismiss="modal" Cancel
