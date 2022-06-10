@@ -3,6 +3,7 @@
 require 'roda'
 
 module TimeCapsule
+  # rubocop:disable Metrics/ClassLength
   # Web controller for TimeCapsule API
   class App < Roda
     route('capsules') do |routing|
@@ -38,11 +39,11 @@ module TimeCapsule
                                       .call(@current_account, capsule_id)
 
                   # change the letter status when receiver open first time
-                  if view_or_edit == "view" && letter["status"] == 2
+                  if view_or_edit == 'view' && letter['status'] == 2
                     UpdateLetter.new(App.config)
-                              .call(@current_account, letter['id'], Hash.new, 3)
+                                .call(@current_account, letter['id'], {}, 3)
                   end
-                  is_view = (view_or_edit == "view" ? view_or_edit : "")
+                  is_view = (view_or_edit == 'view' ? view_or_edit : '')
 
                   view :letter, locals: {
                     current_account: @current_account, letter:, capsule: capsule['attributes'], collaborators:, is_view:
@@ -92,16 +93,16 @@ module TimeCapsule
             capsule = Capsule.new(capsule_info)
 
             # get letters
-            if capsule.type == 3
-              # get received letters
-              letters = GetReceivedLetters.new(App.config).call(
-                @current_account, capsule_id
-              )
-            else
-              letters = GetCapsuleLetters.new(App.config).call(
-                @current_account, capsule_id
-              )
-            end
+            letters = if capsule.type == 3
+                        # get received letters
+                        GetReceivedLetters.new(App.config).call(
+                          @current_account, capsule_id
+                        )
+                      else
+                        GetCapsuleLetters.new(App.config).call(
+                          @current_account, capsule_id
+                        )
+                      end
             status_code = { 1 => 'Draft', 2 => 'Sended', 3 => 'Reciever Recieved' }
             letters.each do |letter|
               letter['attributes']['status'] = status_code[letter['attributes']['status']]
@@ -133,4 +134,5 @@ module TimeCapsule
       end
     end
   end
+  # rubocop:enable Metrics/ClassLength
 end
