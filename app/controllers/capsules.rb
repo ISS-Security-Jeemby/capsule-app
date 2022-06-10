@@ -74,12 +74,12 @@ module TimeCapsule
               routing.on 'delete' do
                 routing.get do
 
-                  letter = UpdateLetter.new(App.config)
-                      .call(@current_account, letter_id, routing.params)
+                  letter = DeleteLetter.new(App.config)
+                      .call(@current_account, letter_id)
                   view :letter, locals: {
                      current_account: @current_account, letter:
                   }
-                routing.redirect @capsule_route
+                  routing.redirect @capsule_route
 
                 end
               end
