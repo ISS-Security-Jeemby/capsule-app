@@ -16,8 +16,10 @@ div class="row mt-4"
             textarea name='content' id='content_input' class="form-control" placeholder="Write down your messages..."  #{letter['content']}
 
           button type='submit' class="mr-2 btn btn-primary submit" id='registration-form-submit' value='submit' Save
-          '
           a href="/capsules/#{capsule['id']}" class="m-2 ml-2 btn btn-secondary" role="button" Cancel
+          button type="button" class="btn btn-danger" onclick="window.location.href='/capsules/#{capsule['id']}/letters/#{letter['id']}/delete'" Delete
+
+        
       - else
         h4 Received Letter
         p 
