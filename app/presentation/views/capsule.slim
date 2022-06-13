@@ -37,7 +37,7 @@ table class="table"
             - if letters[i]['policies']['can_edit']
               button type="button" class="btn btn-primary" onclick="window.location.href='/capsules/#{capsule.id}/letters/#{letters[i]['attributes']['id']}/edit'" Edit
               '
-              button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#sendLetterModal#{letters[i]['attributes']['id']}" Sendtest
+              button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#sendLetterModal#{letters[i]['attributes']['id']}" Send
               include :send_letter_partial
             - if letters[i]['policies']['can_delete']
               button type="button" class="btn btn-danger" onclick="window.location.href='/capsules/#{capsule.id}/letters/#{letters[i]['attributes']['id']}/delete'" Delete
