@@ -31,31 +31,10 @@ module TimeCapsule
               # POST capsules/[capsule_id]/letters/[letter_id]/send
               routing.on 'send' do
                 routing.post do
-
-                  # letter =SendLetter.new(App.config)
-                  #     .call(@current_account, letter_id)
-                  #                     letter_id = routing.params['id']
                   routing.params.delete('id')
                   UpdateLetter.new(App.config)
                               .call(@current_account, letter_id, routing.params, 2)
                   routing.redirect @capsule_route
-                  # collaborators = GetLetterCollaborators.new(App.config).call(
-                  #   @current_account, letter_id:
-                  # )
-                  # capsule = GetCapsule.new(App.config)
-                  #     .call(@current_account, capsule_id)
-
-                  # change the letter status when receiver open first time
-                  # if letter['status'] == 2
-                  #   UpdateLetter.new(App.config)
-                  #       .call(@current_account, letter['id'], {}, 3)
-                  # end
-                  # is_view =  'view'
-
-                  # view :letter, locals: {
-                  #   current_account: @current_account, letter:, capsule: capsule['attributes'], collaborators:, is_view:
-                  # }
-                  # routing.redirect @capsule_route
                 end
               end
 
@@ -63,8 +42,9 @@ module TimeCapsule
               routing.on 'view' do
                 routing.get do
 
-                  letter = GetLetter.new(App.config)
-                      .call(@current_account, letter_id)
+                  # get received one letter
+                  letter = GetReceivedLetter.new(App.config)
+                  .call(@current_account, letter_id)
                   collaborators = GetLetterCollaborators.new(App.config).call(
                     @current_account, letter_id:
                   )
@@ -73,8 +53,10 @@ module TimeCapsule
 
                   # change the letter status when receiver open first time
                   if letter['status'] == 2
+                    
                     UpdateLetter.new(App.config)
-                        .call(@current_account, letter['id'], {}, 3)
+                    .call(@current_account, letter['id'], {}, 3)
+                    
                   end
                   is_view =  'view'
 
@@ -160,7 +142,7 @@ module TimeCapsule
             capsule = Capsule.new(capsule_info)
 
             
-            # get letters
+            # get all letters
             letters = if capsule.type == 3
                         # get received letters
                         GetReceivedLetters.new(App.config).call(
@@ -171,7 +153,6 @@ module TimeCapsule
                           @current_account, capsule_id
                         )
                       end
-            binding.pry
             status_code = { 1 => 'Draft', 2 => 'Sended', 3 => 'Reciever Recieved' }
             letters.each do |letter|
               letter['attributes']['status'] = status_code[letter['attributes']['status']]
