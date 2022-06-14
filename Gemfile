@@ -27,6 +27,7 @@ gem 'redis-rack'
 gem 'dry-validation'
 gem 'rack-ssl-enforcer'
 gem 'rbnacl' # assumes libsodium package already installed
+gem 'secure_headers'
 
 # Development
 group :development do

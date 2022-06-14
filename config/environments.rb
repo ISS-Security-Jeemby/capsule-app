@@ -4,7 +4,6 @@ require 'delegate'
 require 'roda'
 require 'figaro'
 require 'logger'
-require 'rack/ssl-enforcer'
 require 'rack/session/redis'
 require_relative '../require_app'
 
@@ -35,9 +34,6 @@ module TimeCapsule
 
     configure :production do
       SecureSession.setup(ENV.fetch('REDIS_TLS_URL')) # REDIS_TLS_URL used again below
-
-      use Rack::SslEnforcer, hsts: true
-
       use Rack::Session::Redis,
           expire_after: ONE_MONTH,
           redis_server: {
