@@ -27,7 +27,6 @@ module TimeCapsule
             end
 
             routing.on String do |letter_id|
-
               # POST capsules/[capsule_id]/letters/[letter_id]/send
               routing.on 'send' do
                 routing.post do
@@ -41,24 +40,20 @@ module TimeCapsule
               # GET capsules/[capsule_id]/letters/[letter_id]/view
               routing.on 'view' do
                 routing.get do
-
                   # get received one letter
                   letter = GetReceivedLetter.new(App.config)
-                  .call(@current_account, letter_id)
-                  collaborators = GetLetterCollaborators.new(App.config).call(
-                    @current_account, letter_id:
-                  )
+                                            .call(@current_account, letter_id)
+                  collaborators = GetLetterCollaborators.new(App.config)
+                                                        .call(@current_account, letter_id:)
                   capsule = GetCapsule.new(App.config)
-                      .call(@current_account, capsule_id)
+                                      .call(@current_account, capsule_id)
 
                   # change the letter status when receiver open first time
                   if letter['status'] == 2
-                    
                     UpdateLetter.new(App.config)
-                    .call(@current_account, letter['id'], {}, 3)
-                    
+                                .call(@current_account, letter['id'], {}, 3)
                   end
-                  is_view =  'view'
+                  is_view = 'view'
 
                   view :letter, locals: {
                     current_account: @current_account, letter:, capsule: capsule['attributes'], collaborators:, is_view:
@@ -66,10 +61,8 @@ module TimeCapsule
                 end
               end
 
-
               # GET capsules/[capsule_id]/letters/[letter_id]/edit
               routing.on 'edit' do
-                
                 routing.get do
                   letter = GetLetter.new(App.config)
                                     .call(@current_account, letter_id)
@@ -79,7 +72,7 @@ module TimeCapsule
                   capsule = GetCapsule.new(App.config)
                                       .call(@current_account, capsule_id)
 
-                  is_view =  ''
+                  is_view = ''
                   view :letter, locals: {
                     current_account: @current_account, letter:, capsule: capsule['attributes'], collaborators:, is_view:
                   }
@@ -89,8 +82,7 @@ module TimeCapsule
               # GET capsules/[capsule_id]/letters/[letter_id]/delete
               routing.on 'delete' do
                 routing.get do
-                  letter = DeleteLetter.new(App.config)
-                      .call(@current_account, letter_id)
+                  DeleteLetter.new(App.config).call(@current_account, letter_id)
                   # view :letter, locals: {
                   #    current_account: @current_account, letter:
                   # }
@@ -100,8 +92,7 @@ module TimeCapsule
 
               # PUT capsules/[capsule_id]/letters/[letter_id]
               routing.post do
-                
-                letter = GetLetter.new(App.config).call(@current_account, letter_id)
+                GetLetter.new(App.config).call(@current_account, letter_id)
                 letter = UpdateLetter.new(App.config)
                                      .call(@current_account, letter_id, routing.params)
                 view :letter, locals: {
@@ -140,8 +131,6 @@ module TimeCapsule
               @current_account, capsule_id
             )
             capsule = Capsule.new(capsule_info)
-
-            
             # get all letters
             letters = if capsule.type == 3
                         # get received letters

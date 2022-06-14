@@ -21,7 +21,6 @@ module Credence
     configure :production do
       use Rack::SslEnforcer, hsts: true
     end
-    
     ## Uncomment to drop the login session in case of any violation
     # use Rack::Protection, reaction: :drop_session
     use SecureHeaders::Middleware
@@ -41,7 +40,7 @@ module Credence
       config.x_permitted_cross_domain_policies = 'none'
       config.referrer_policy = 'origin-when-cross-origin'
 
-      # note: single-quotes needed around 'self' and 'none' in CSPs
+      # NOTE: single-quotes needed around 'self' and 'none' in CSPs
       # rubocop:disable Lint/PercentStringArray
       config.csp = {
         report_only: false,
