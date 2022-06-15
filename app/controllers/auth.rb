@@ -83,7 +83,6 @@ module TimeCapsule
             authorized[:auth_token],
             authorized[:account_id]
           )
-          binding.pry
           # create capsules for google sso account
           CreateCapsules.new(App.config).call(current_account:)
 
