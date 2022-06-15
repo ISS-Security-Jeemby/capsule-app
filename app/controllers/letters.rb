@@ -35,6 +35,7 @@ module TimeCapsule
             )
 
             task_res.instance_of?(String) ? flash[:error] = task_res : flash[:notice] = task[:message]
+            
 
           rescue StandardError
             flash[:error] = 'Could not find collaborator'
