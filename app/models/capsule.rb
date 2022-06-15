@@ -31,7 +31,7 @@ module TimeCapsule
     def process_policies(policies)
       return unless policies
 
-      @policies = OpenStruct.new(policies)
+      @policies = Struct.new(policies)
     end
 
     def process_letters(letters_info)
