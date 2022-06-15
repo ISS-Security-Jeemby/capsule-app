@@ -2,7 +2,7 @@ div class="row mt-4"
   - if letter
     div class="col-9"
       - if is_view.empty?
-        h4 Edit Letter
+        h4 class="text-info" Edit Letter
 
         form role="form" action="/capsules/#{capsule['id']}/letters/#{letter['attributes']['id']}" method='post' id='edit-letter-form'
           div class="form-group"
@@ -15,7 +15,7 @@ div class="row mt-4"
             label for='content_input' Content:
             textarea name='content' id='content_input' class="form-control" placeholder="Write down your messages..."#{letter['attributes']['content']}
 
-          button type='submit' class="mr-2 btn btn-primary submit" id='registration-form-submit' value='submit' Save
+          button type='submit' class="mr-2 btn btn-info submit" id='registration-form-submit' value='submit' Save
           a href="/capsules/#{capsule['id']}" class="m-2 ml-2 btn btn-secondary" role="button" Cancel
           - if letter['policies']['can_delete']
             button type="button" class="btn btn-danger" onclick="window.location.href='/capsules/#{capsule['id']}/letters/#{letter['attributes']['id']}/delete'" Delete
@@ -26,16 +26,16 @@ div class="row mt-4"
         p 
           b Title Name:
           '
-          | #{letter['attributes']['title']}
+          | #{letter['title']}
         p 
-          b Content:
-          | #{letter['attributes']['content']}
+          b Content: 
+          | #{letter['content']}
 
-        button type="button" class="btn btn-primary" onclick="window.location.href='/capsules/#{capsule['id']}'" Back To Received Letter
+        button type="button" class="btn btn-info" onclick="window.location.href='/capsules/#{capsule['id']}'" Back To Received Letter
 
     - if capsule['type'] == 2
       div class="col-3"
-        h4 Collaborators 
+        h4 class="text-info" Collaborators 
         - collaborators.each do |collaborator|
           div #{collaborator}
   

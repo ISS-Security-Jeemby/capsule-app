@@ -4,7 +4,7 @@ link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-soc
 
 div class="row d-flex justify-content-center mx-auto"
   div class="col-lg-4"
-    h3 class="mt-4 text-center" Login
+    h3 class="mt-5 text-info text-center" Login
     form method='post' action='/auth/login' id='form-login'
       div class="form-group text-dark"
         label for='input-username' Username
@@ -13,11 +13,12 @@ div class="row d-flex justify-content-center mx-auto"
         label for='input-password' Password
         input type='password' name='password' id='input-password' class="form-control"
       
-      button type='submit' id='button-login' value='login' class="mt-3 w-100 btn btn-primary btn-block" login
+      button type='submit' id='button-login' value='login' class="mt-4 w-100 btn btn-info btn-block" login
       
-  div class="row d-flex justify-content-center mx-auto mt-4 p-0"
-    span class="line-through text-center m-4"  OR LOG IN WITH 
-    div class="col-lg-4 container overflow-hidden"
+  div class="d-flex flex-column justify-content-center mt-4 p-0"
+    div class="col-lg-4 container overflow-hidden p-0"
+      span class="line-through text-center my-4 px-3"  OR LOG IN WITH 
+    div class="col-lg-4 container overflow-hidden px-3"
       div class="row gy-1"
         div class="col-6"
           a class="w-100 fab fa-github btn-block btn-lg btn-github text-decoration-none text-center border border-dark bg-white text-dark" href=gh_oauth_url
