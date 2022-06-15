@@ -8,6 +8,9 @@ AllCops:
   Exclude:
     - _snippets/*
   
+Metrics/MethodLength:
+  Max: 15
+
 Metrics/BlockLength:
   Enabled: true
   Exclude:

@@ -5,8 +5,9 @@ require 'http'
 module TimeCapsule
   # Returns an authenticated user, or nil
   class AuthorizeGoogleAccount
-    # Errors emanating from Github
     class ReuseEmailError < StandardError; end
+
+    # Errors emanating from Google
     class UnauthorizedError < StandardError
       def message
         'Could not login with Google'
