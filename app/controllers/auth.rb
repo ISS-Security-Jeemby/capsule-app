@@ -80,13 +80,21 @@ module TimeCapsule
 
           current_account = Account.new(
             authorized[:account],
-            authorized[:auth_token]
+            authorized[:auth_token],
+            authorized[:account_id]
           )
+          # create capsules for google sso account
+          CreateCapsules.new(App.config).call(current_account:)
 
           CurrentSession.new(session).current_account = current_account
 
           flash[:notice] = "Welcome #{current_account.username}!"
           routing.redirect '/capsules'
+        rescue AuthorizeGithubAccount::ReuseEmailError => e
+          App.logger.warn "Email already registered: #{e.inspect}\n#{e.backtrace}"
+          flash[:error] = 'Email already registered'
+          response.status = 400
+          routing.redirect @login_route
         rescue AuthorizeGithubAccount::UnauthorizedError
           flash[:error] = 'Could not login with Github'
           response.status = 403

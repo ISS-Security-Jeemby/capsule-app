@@ -5,6 +5,8 @@ require 'http'
 module TimeCapsule
   # Returns an authenticated user, or nil
   class AuthorizeGithubAccount
+    class ReuseEmailError < StandardError; end
+
     # Errors emanating from Github
     class UnauthorizedError < StandardError
       def message
@@ -39,13 +41,14 @@ module TimeCapsule
       response =
         HTTP.post("#{@config.API_URL}/auth/sso",
                   json: { access_token: })
-      raise if response.code >= 400
+      raise(ReuseEmailError) if response.code == 400
+      raise if response.code > 400
 
       account_info = JSON.parse(response)['data']['attributes']
-
       {
         account: account_info['account'],
-        auth_token: account_info['auth_token']
+        auth_token: account_info['auth_token'],
+        account_id: account_info['account_id']
       }
     end
   end
