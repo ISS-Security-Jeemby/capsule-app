@@ -32,6 +32,7 @@ module TimeCapsule
       routing.is 'login' do
         # GET /auth/login
         routing.get do
+          binding.irb
           view :login, locals: {
             gh_oauth_url: gh_oauth_url(App.config),
             google_oauth_url: google_oauth_url(App.config)
@@ -60,9 +61,10 @@ module TimeCapsule
           flash[:notice] = "Welcome back #{current_account.username}!"
           routing.redirect '/'
         rescue AuthenticateAccount::UnauthorizedError
-          flash.now[:error] = 'Username and password did not match our records'
+          binding.irb
+          flash[:error] = 'Username and password did not match our records'
           response.status = 401
-          view :login
+          routing.redirect @login_route
         rescue AuthenticateAccount::ApiServerError => e
           App.logger.warn "API server error: #{e.inspect}\n#{e.backtrace}"
           flash[:error] = 'Our servers are not responding -- please try later'
