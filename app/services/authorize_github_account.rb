@@ -48,7 +48,8 @@ module TimeCapsule
       {
         account: account_info['account'],
         auth_token: account_info['auth_token'],
-        account_id: account_info['account_id']
+        account_id: account_info['account_id'],
+        is_register: account_info['is_register']
       }
     end
   end
