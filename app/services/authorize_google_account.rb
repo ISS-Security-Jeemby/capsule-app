@@ -45,10 +45,10 @@ module TimeCapsule
       raise if response.code >= 400
 
       account_info = JSON.parse(response)['data']['attributes']
-
       {
         account: account_info['account'],
-        auth_token: account_info['auth_token']
+        auth_token: account_info['auth_token'],
+        account_id: account_info['account_id']
       }
     end
     # rubocop:enable Style/HashSyntax
