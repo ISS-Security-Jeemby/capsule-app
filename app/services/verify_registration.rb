@@ -6,6 +6,7 @@ module TimeCapsule
   # Returns an authenticated user, or nil
   class VerifyRegistration
     class VerificationError < StandardError; end
+    class ReuseEmailOrUsernameError < StandardError; end
     class ApiServerError < StandardError; end
 
     def initialize(config)
@@ -19,6 +20,7 @@ module TimeCapsule
 
       response = HTTP.post("#{@config.API_URL}/auth/register",
                            json: registration_data)
+      raise(ReuseEmailOrUsernameError) if response.code == 400
       raise(VerificationError) unless response.code == 202
 
       JSON.parse(response.to_s)
