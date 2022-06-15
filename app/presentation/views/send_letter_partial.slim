@@ -2,7 +2,7 @@ div id="sendLetterModal#{letters[i]['attributes']['id']}" class="modal fade" rol
   div class="modal-dialog"
     div class="modal-content"
       div class="modal-header"
-        h4 Send The Letter to Receiver
+        h4 class="text-info" Send The Letter to Receiver
         button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
       div class="modal-body" 
         form role="form" action="/capsules/#{capsule.id}/letters/#{letters[i]['attributes']['id']}/send" method='post' id='new-collaborator-form'
@@ -23,6 +23,6 @@ div id="sendLetterModal#{letters[i]['attributes']['id']}" class="modal fade" rol
 
           input type='hidden' name='id' value="#{letters[i]['attributes']['id']}"
 
-          button type='submit' class="btn btn-primary submit" id='registration-form-submit' value='submit' Send
+          button type='submit' class="btn btn-info submit" id='registration-form-submit' value='submit' Send
           '
           button type="button" class="ml-2 btn btn-secondary" data-bs-dismiss="modal" Cancel
