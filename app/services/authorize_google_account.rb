@@ -6,6 +6,7 @@ module TimeCapsule
   # Returns an authenticated user, or nil
   class AuthorizeGoogleAccount
     # Errors emanating from Github
+    class ReuseEmailError < StandardError; end
     class UnauthorizedError < StandardError
       def message
         'Could not login with Google'
@@ -42,7 +43,8 @@ module TimeCapsule
       response =
         HTTP.post("#{@config.API_URL}/auth/google_sso",
                   json: { access_token: access_token })
-      raise if response.code >= 400
+      raise(ReuseEmailError) if response.code == 400
+      raise if response.code > 400
 
       account_info = JSON.parse(response)['data']['attributes']
       {
