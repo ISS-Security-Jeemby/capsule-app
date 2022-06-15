@@ -13,7 +13,8 @@ table class="table"
       - if capsule.type==2
         th Collaborator
       th Receiver
-      th Status
+      - unless capsule.type==3
+        th Status
       th Action
   tbody
     - for i in 0..letters.length()-1
@@ -25,7 +26,7 @@ table class="table"
             - for j in 0..collaborators[i].length()-1
               button type="button" class="btn btn-secondary" #{collaborators[i][j]}
 
-            - if letters[i]['policies']['can_add_collaborators']
+            - if letters[i]
               button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newCollaboratorModal#{letters[i]['attributes']['id']}" + 
               include :collaborator_new_partial
         td 
@@ -34,14 +35,14 @@ table class="table"
           p #{letters[i]['attributes']['status']}
         td
           - if capsule.type!=3 && letters[i]['attributes']['status']=="Draft"
-            - if letters[i]['policies']['can_edit']
+            - if letters[i]
               button type="button" class="btn btn-primary" onclick="window.location.href='/capsules/#{capsule.id}/letters/#{letters[i]['attributes']['id']}/edit'" Edit
               '
               button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#sendLetterModal#{letters[i]['attributes']['id']}" Send
               include :send_letter_partial
             - if letters[i]['policies']['can_delete']
               button type="button" class="btn btn-danger" onclick="window.location.href='/capsules/#{capsule.id}/letters/#{letters[i]['attributes']['id']}/delete'" Delete
-          - if capsule.type==3 && letters[i]['policies']['can_view']
+          - if capsule.type==3 && letters[i]
             button type="button" class="btn btn-primary" onclick="window.location.href='/capsules/#{capsule.id}/letters/#{letters[i]['attributes']['id']}/view'" View
 
 - if capsule.type != 3
