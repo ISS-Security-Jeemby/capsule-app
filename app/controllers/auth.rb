@@ -100,16 +100,19 @@ module TimeCapsule
       end
 
       routing.is 'google-callback' do
-        # GET /auth/github_callback
+        # GET /auth/google-callback
         routing.get do
           authorized = AuthorizeGoogleAccount
                        .new(App.config)
                        .call(routing.params['code'])
-
           current_account = Account.new(
             authorized[:account],
-            authorized[:auth_token]
+            authorized[:auth_token],
+            authorized[:account_id]
           )
+
+          # create capsules for google sso account
+          CreateCapsules.new(App.config).call(current_account:)
 
           CurrentSession.new(session).current_account = current_account
 
