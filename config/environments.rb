@@ -32,10 +32,10 @@ module TimeCapsule
       SecureMessage.setup(ENV.delete('MSG_KEY'))
       SignedMessage.setup(config)
     end
-    
+
     configure :production do
       SecureSession.setup(ENV.fetch('REDIS_TLS_URL')) # REDIS_TLS_URL used again below
-      
+
       use Rack::Session::Redis,
           expire_after: ONE_MONTH,
           httponly: true,
