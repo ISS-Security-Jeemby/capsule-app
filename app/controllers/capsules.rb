@@ -132,17 +132,26 @@ module TimeCapsule
             )
             capsule = Capsule.new(capsule_info)
             # get all letters
-            letters = if capsule.type == 3
+            letters = case capsule.type
+                      when 3
                         # get received letters
                         GetReceivedLetters.new(App.config).call(
                           @current_account, capsule_id
                         )
-                      else
+                      when 2
+                        GetSharedLetters.new(App.config).call(
+                          @current_account, capsule_id
+                        )
+                      when 1
                         GetCapsuleLetters.new(App.config).call(
                           @current_account, capsule_id
                         )
                       end
-            status_code = { 1 => 'Draft', 2 => 'Sended', 3 => 'Reciever Recieved' }
+            unless letters
+              flash[:error] = 'No Letters'
+              routing.redirect '/capsules'
+            end
+            status_code = { 1 => 'Draft', 2 => 'Sent', 3 => 'Reciever Recieved' }
             letters.each do |letter|
               letter['attributes']['status'] = status_code[letter['attributes']['status']]
             end
@@ -151,7 +160,6 @@ module TimeCapsule
             collaborators = GetAllCollaborators.new(App.config).call(
               @current_account, letters:
             )
-
             view :capsule, locals: {
               current_account: @current_account, capsule:, letters:, collaborators:
             }
