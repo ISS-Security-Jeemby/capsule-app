@@ -118,7 +118,12 @@ module TimeCapsule
 
           flash[:notice] = "Welcome #{current_account.username}!"
           routing.redirect '/capsules'
-        rescue AuthorizeGithubAccount::UnauthorizedError
+        rescue AuthorizeGoogleAccount::ReuseEmailError => e
+          App.logger.warn "Email already registered: #{e.inspect}\n#{e.backtrace}"
+          flash[:error] = 'Email already registered'
+          response.status = 400
+          routing.redirect @login_route
+        rescue AuthorizeGoogleAccount::UnauthorizedError
           flash[:error] = 'Could not login with Google'
           response.status = 403
           routing.redirect @login_route
@@ -164,6 +169,10 @@ module TimeCapsule
           rescue VerifyRegistration::ApiServerError => e
             App.logger.warn "API server error: #{e.inspect}\n#{e.backtrace}"
             flash[:error] = 'Our servers are not responding -- please try later'
+            routing.redirect @register_route
+          rescue VerifyRegistration::ReuseEmailOrUsernameError => e
+            App.logger.warn "Email or Username already used: #{e.inspect}\n#{e.backtrace}"
+            flash[:error] = 'Email or Username already used'
             routing.redirect @register_route
           rescue StandardError => e
             puts e.full_message
