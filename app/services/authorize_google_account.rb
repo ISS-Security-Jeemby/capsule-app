@@ -42,7 +42,7 @@ module TimeCapsule
 
     def get_googlesso_account_from_api(access_token)
       signed_google_sso_info = { access_token: }
-                        .then { |sso_info| SignedMessage.sign(sso_info) }
+                               .then { |sso_info| SignedMessage.sign(sso_info) }
 
       response = HTTP.post(
         "#{@config.API_URL}/auth/google_sso",
@@ -50,6 +50,7 @@ module TimeCapsule
       )
       raise(ReuseEmailError) if response.code == 400
       raise(UnauthorizedError) unless response.code == 200
+
       account_info = JSON.parse(response)['data']['attributes']
       {
         account: account_info['account'],
