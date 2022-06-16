@@ -15,8 +15,7 @@ div class="row mt-4"
             label for='content_input' Content:
             textarea name='content' id='content_input' class="form-control" placeholder="Write down your messages..."#{letter['attributes']['content']}
 
-          - if capsule['type'] == 2
-            input type="hidden" name="is_locked" value="false"
+          input type="hidden" name="is_locked" value="false"
 
           button type='submit' class="mr-2 btn btn-info submit" id='registration-form-submit' value='submit' Save
           a href="/capsules/#{capsule['id']}/letters/#{letter['attributes']['id']}/leave" class="m-2 ml-2 btn btn-secondary" role="button" Cancel
