@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'roda'
+require_relative './app'
 
 module TimeCapsule
   # Web controller for TimeCapsule API
@@ -18,7 +19,7 @@ module TimeCapsule
               flash[:error] = Form.validation_errors(collaborator_info)
               routing.halt
             end
-
+            NoticeCollaborator.new(App.config).call(@current_account, routing.params)
             task_list = {
               'add' => { service: AddCollaborator,
                          message: 'Added new collaborator to letter' },
@@ -32,7 +33,9 @@ module TimeCapsule
               collaborator: collaborator_info,
               letter_id:
             )
+
             task_res.instance_of?(String) ? flash[:error] = task_res : flash[:notice] = task[:message]
+            
 
           rescue StandardError
             flash[:error] = 'Could not find collaborator'

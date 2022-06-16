@@ -1,8 +1,5 @@
-div class="row" style="vertical-align: bottom;"
-  div class="col-xs-9"
-    h3 All Capsules
-  div class="col-xs-3"
-table class="table"
+h2 class="text-info my-4" All Capsules
+table class="table table-hover"
   thead
     tr
       th Capsule name
@@ -10,5 +7,4 @@ table class="table"
     - capsules.all.each do |cap|
       tr
         td 
-          a href="/capsules/#{cap.id}" #{cap.name}
-  
+          a class="text-decoration-none text-info" href="/capsules/#{cap.id}" #{cap.name}

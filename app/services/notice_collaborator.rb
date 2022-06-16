@@ -4,7 +4,7 @@ require 'http'
 
 module TimeCapsule
   # Returns an authenticated user, or nil
-  class VerifyRegistration
+  class NoticeCollaborator
     class VerificationError < StandardError; end
     class ReuseEmailOrUsernameError < StandardError; end
     class ApiServerError < StandardError; end
@@ -13,13 +13,12 @@ module TimeCapsule
       @config = config
     end
 
-    def call(registration_data)
-      registration_token = SecureMessage.encrypt(registration_data)
-      registration_data['verification_url'] =
-        "#{@config.APP_URL}/auth/register/#{registration_token}"
+    def call(current_account, collaborator_data)
+      # collaborator_token = SecureMessage.encrypt(collaborator_data)
 
-      response = HTTP.post("#{@config.API_URL}/auth/register",
-                           json: SignedMessage.sign(registration_data))
+      response = HTTP.auth("Bearer #{current_account.auth_token}")
+                     .post("#{@config.API_URL}/letters/notice", json: collaborator_data)
+
       raise(ReuseEmailOrUsernameError) if response.code == 400
       raise(VerificationError) unless response.code == 202
 

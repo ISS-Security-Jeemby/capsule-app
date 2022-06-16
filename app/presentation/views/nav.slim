@@ -1,8 +1,8 @@
-nav role="navigation" class="navbar navbar-expand-sm navbar-dark bg-primary"
+nav role="navigation" class="navbar navbar-expand-sm navbar-light bg-light border-info border-bottom border-2"
   div class="container-fluid"
     a class="navbar-brand" rel="home" href="/" title="Securely Share Configurations"
-        img alt="Time Capsule" src="/capsule.png" style="max-width:35px; margin-top: -7px;"
-    a class="navbar-brand" href="/" Time Capsule
+        img alt="Time Capsule" src="/capsule.png" style="max-width:35px;"
+    a class="navbar-brand text-info fw-bold" href="/" Time Capsule
     button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation"
       span class="navbar-toggler-icon"
 
@@ -10,17 +10,16 @@ nav role="navigation" class="navbar navbar-expand-sm navbar-dark bg-primary"
       ul class="navbar-nav me-auto"
         - if @current_account.logged_in?
           li class="nav-item"
-            a class="nav-link" href="/capsules/" Capsule
+            a class="nav-link text-info" href="/capsules/" Capsule
           li class="nav-item dropdown"
-            a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"
+            a class="nav-link dropdown-toggle text-info" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"
               = "#{@current_account.username}"
 
             div class=-"dropdown-menu"
-              a class="dropdown-item" href="/account/#{@current_account.username}" account
-              a class="dropdown-item" href='/auth/logout' logout
+              a class="dropdown-item text-info" href="/account/#{@current_account.username}" account
+              a class="dropdown-item text-info" href='/auth/logout' logout
         - else
           li class="nav-item"
-            a class="nav-link" href='/auth/login' login
+            a class="nav-link text-info" href='/auth/login' login
           li class="nav-item"
-            a class="nav-link" href='/auth/register' register
-        
+            a class="nav-link text-info" href='/auth/register' register

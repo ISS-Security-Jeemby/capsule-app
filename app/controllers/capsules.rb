@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'roda'
+require_relative './app'
 
 module TimeCapsule
   # rubocop:disable Metrics/ClassLength
@@ -169,7 +170,7 @@ module TimeCapsule
               flash[:error] = 'No Letters'
               routing.redirect '/capsules'
             end
-            status_code = { 1 => 'Draft', 2 => 'Sent', 3 => 'Reciever Recieved' }
+            status_code = { 1 => 'Draft', 2 => 'Sent', 3 => 'Receiver Received' }
             letters.each do |letter|
               letter['attributes']['status'] = status_code[letter['attributes']['status']]
             end

@@ -1,12 +1,9 @@
-h2
+h2 class="text-info my-4 d-flex justify-content-between"
   == "#{capsule.name}"
+  - if capsule.type != 3
+    button type="button" class="mr-0 btn btn-info" data-bs-toggle="modal" data-bs-target="#newLetterModal" + New Letter
 
-- if capsule.type != 3
-  div class="row"
-    div class="col-xs-4"
-        button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newLetterModal" + New Letter
-
-table class="table"
+table class="table table-hover"
   thead
     tr
       th Letter name
@@ -27,27 +24,32 @@ table class="table"
             p #{letters[i]['relationships']['capsule']['attributes']['id'] == capsule.id}
           td
             - for j in 0..collaborators[i].length()-1
-              button type="button" class="btn btn-secondary" #{collaborators[i][j]}
-
+              p class="badge rounded-pill bg-light text-wrap m-1" #{collaborators[i][j]}
             - if letters[i] && letters[i]['attributes']['status']=="Draft"
-              button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newCollaboratorModal#{letters[i]['attributes']['id']}" + 
+              button type="button" class="btn btn-outline-dark btn-sm" data-bs-toggle="modal" data-bs-target="#newCollaboratorModal#{letters[i]['attributes']['id']}" + 
               include :collaborator_new_partial
         td 
           p #{ letters[i]['attributes']['receiver_id'].empty? ? "N/A" : letters[i]['attributes']['receiver_id'] }
-        td
-          p #{letters[i]['attributes']['status']}
+        - unless capsule.type==3
+          td
+            - if letters[i]['attributes']['status'] == 'Draft'
+              p class="badge rounded-pill bg-warning text-wrap" #{letters[i]['attributes']['status']}
+            - if letters[i]['attributes']['status'] == 'Sent'
+              p class="badge rounded-pill bg-info text-wrap" #{letters[i]['attributes']['status']}
+            - if letters[i]['attributes']['status'] == 'Receiver Received'
+              p class="badge rounded-pill bg-success text-wrap" #{letters[i]['attributes']['status']}
         td
           - if capsule.type!=3 && letters[i]['attributes']['status']=="Draft"
             - if letters[i]['policies']['can_edit']
-              button type="button" class="btn btn-primary" onclick="window.location.href='/capsules/#{capsule.id}/letters/#{letters[i]['attributes']['id']}/edit'" Edit
+              button type="button" class="btn btn-outline-dark btn-sm" onclick="window.location.href='/capsules/#{capsule.id}/letters/#{letters[i]['attributes']['id']}/edit'" Edit
               '
-              button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#sendLetterModal#{letters[i]['attributes']['id']}" Send
+              button type="button" class="btn btn-outline-info btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#sendLetterModal#{letters[i]['attributes']['id']}" Send
               include :send_letter_partial
             - if letters[i]['policies']['can_delete']
               '
-              button type="button" class="btn btn-danger" onclick="window.location.href='/capsules/#{capsule.id}/letters/#{letters[i]['attributes']['id']}/delete'" Delete
+              button type="button" class="btn btn-outline-danger btn-sm mx-1" onclick="window.location.href='/capsules/#{capsule.id}/letters/#{letters[i]['attributes']['id']}/delete'" Delete
           - if capsule.type==3 && letters[i]
-            button type="button" class="btn btn-primary" onclick="window.location.href='/capsules/#{capsule.id}/letters/#{letters[i]['attributes']['id']}/view'" View
+            button type="button" class="btn btn-outline-success btn-sm mx-1" onclick="window.location.href='/capsules/#{capsule.id}/letters/#{letters[i]['attributes']['id']}/view'" View
 
 - if capsule.type != 3
   include :letter_new_partial
