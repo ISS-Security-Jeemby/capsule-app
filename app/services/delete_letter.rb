@@ -12,7 +12,7 @@ module TimeCapsule
     def call(current_account, letter_id)
       response = HTTP.auth("Bearer #{current_account.auth_token}")
                      .delete("#{@config.API_URL}/letters/#{letter_id}")
-      response.code == 200 ? JSON.parse(response.body.to_s)['data']['data'] : nil
+      response.code == 200
     end
   end
 end
