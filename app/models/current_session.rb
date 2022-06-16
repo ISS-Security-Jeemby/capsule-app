@@ -18,11 +18,13 @@ module TimeCapsule
     def current_account=(current_account)
       @secure_session.set(:account, current_account.account_info)
       @secure_session.set(:auth_token, current_account.auth_token)
+      @secure_session.set(:id, current_account.id)
     end
 
     def delete
       @secure_session.delete(:account)
       @secure_session.delete(:auth_token)
+      @secure_session.delete(:id)
     end
   end
 end

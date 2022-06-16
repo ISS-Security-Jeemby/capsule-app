@@ -83,7 +83,7 @@ module TimeCapsule
             authorized[:auth_token],
             authorized[:account_id]
           )
-          # create capsules for google sso account
+          # create capsules for github sso account
           CreateCapsules.new(App.config).call(current_account:) if authorized[:is_register]
 
           CurrentSession.new(session).current_account = current_account
@@ -121,7 +121,6 @@ module TimeCapsule
 
           # create capsules for google sso account
           CreateCapsules.new(App.config).call(current_account:) if authorized[:is_register]
-
           CurrentSession.new(session).current_account = current_account
 
           flash[:notice] = "Welcome #{current_account.username}!"
