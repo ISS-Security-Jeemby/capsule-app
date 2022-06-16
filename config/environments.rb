@@ -34,12 +34,12 @@ module TimeCapsule
     end
 
     configure :production do
-      SecureSession.setup(ENV.fetch('REDIS_TLS_URL')) # REDIS_TLS_URL used again below
+      SecureSession.setup(ENV.fetch('REDIS_TLS_URL'))
 
       use Rack::Session::Redis,
           expire_after: ONE_MONTH,
           httponly: true,
-          same_site: :strict,
+          same_site: :lax,
           redis_server: {
             url: ENV.delete('REDIS_TLS_URL'),
             ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE }
@@ -57,8 +57,9 @@ module TimeCapsule
 
       use Rack::Session::Pool,
           expire_after: ONE_MONTH,
+          secret: config.SESSION_SECRET,
           httponly: true,
-          same_site: :strict
+          same_site: :lax
 
       # use Rack::Session::Redis,
       #     expire_after: ONE_MONTH,
