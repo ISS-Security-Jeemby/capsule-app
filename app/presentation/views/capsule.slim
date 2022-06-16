@@ -29,7 +29,7 @@ table class="table"
             - for j in 0..collaborators[i].length()-1
               button type="button" class="btn btn-secondary" #{collaborators[i][j]}
 
-            - if letters[i]
+            - if letters[i] && letters[i]['attributes']['status']=="Draft"
               button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newCollaboratorModal#{letters[i]['attributes']['id']}" + 
               include :collaborator_new_partial
         td 
