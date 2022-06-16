@@ -18,7 +18,7 @@ div id="sendLetterModal#{letters[i]['attributes']['id']}" class="modal fade" rol
           div class="form-group"
             label for='date_input' 
               b Received Date:
-            input type='datetime-local' name='send_at' id='date_input' class="form-control"
+            input type='datetime-local' name='send_at' id='date_input' class="form-control" min="#{Time.now.strftime("%Y-%m-%dT%H:%M")}"
           br
 
           input type='hidden' name='id' value="#{letters[i]['attributes']['id']}"
