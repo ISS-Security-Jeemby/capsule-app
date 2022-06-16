@@ -89,7 +89,7 @@ module TimeCapsule
           CurrentSession.new(session).current_account = current_account
 
           flash[:notice] = "Welcome #{current_account.username}!"
-          routing.redirect '/capsules'
+          routing.redirect '/'
         rescue AuthorizeGithubAccount::ReuseEmailError => e
           App.logger.warn "Email already registered: #{e.inspect}\n#{e.backtrace}"
           flash[:error] = 'Email already registered'
@@ -125,7 +125,7 @@ module TimeCapsule
           CurrentSession.new(session).current_account = current_account
 
           flash[:notice] = "Welcome #{current_account.username}!"
-          routing.redirect '/capsules'
+          routing.redirect '/'
         rescue AuthorizeGoogleAccount::ReuseEmailError => e
           App.logger.warn "Email already registered: #{e.inspect}\n#{e.backtrace}"
           flash[:error] = 'Email already registered'

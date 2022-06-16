@@ -8,6 +8,7 @@ table class="table table-hover"
     tr
       th Letter name
       - if capsule.type==2
+        th Is Owner
         th Collaborator
       th Receiver
       - unless capsule.type==3
@@ -20,9 +21,11 @@ table class="table table-hover"
           p #{letters[i]['attributes']['title']}
         - if capsule.type==2
           td
+            p #{letters[i]['relationships']['capsule']['attributes']['id'] == capsule.id}
+          td
             - for j in 0..collaborators[i].length()-1
               p class="badge rounded-pill bg-light text-wrap m-1" #{collaborators[i][j]}
-            - if letters[i] && letters[i]['attributes']['status']!="Sent"
+            - if letters[i] && letters[i]['attributes']['status']=="Draft"
               button type="button" class="btn btn-outline-dark btn-sm" data-bs-toggle="modal" data-bs-target="#newCollaboratorModal#{letters[i]['attributes']['id']}" + 
               include :collaborator_new_partial
         td 
@@ -37,12 +40,13 @@ table class="table table-hover"
               p class="badge rounded-pill bg-success text-wrap" #{letters[i]['attributes']['status']}
         td
           - if capsule.type!=3 && letters[i]['attributes']['status']=="Draft"
-            - if letters[i]
+            - if letters[i]['policies']['can_edit']
               button type="button" class="btn btn-outline-dark btn-sm" onclick="window.location.href='/capsules/#{capsule.id}/letters/#{letters[i]['attributes']['id']}/edit'" Edit
               '
               button type="button" class="btn btn-outline-info btn-sm mx-1" data-bs-toggle="modal" data-bs-target="#sendLetterModal#{letters[i]['attributes']['id']}" Send
               include :send_letter_partial
             - if letters[i]['policies']['can_delete']
+              '
               button type="button" class="btn btn-outline-danger btn-sm mx-1" onclick="window.location.href='/capsules/#{capsule.id}/letters/#{letters[i]['attributes']['id']}/delete'" Delete
           - if capsule.type==3 && letters[i]
             button type="button" class="btn btn-outline-success btn-sm mx-1" onclick="window.location.href='/capsules/#{capsule.id}/letters/#{letters[i]['attributes']['id']}/view'" View

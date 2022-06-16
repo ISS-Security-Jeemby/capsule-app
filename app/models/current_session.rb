@@ -11,7 +11,8 @@ module TimeCapsule
 
     def current_account
       Account.new(@secure_session.get(:account),
-                  @secure_session.get(:auth_token))
+                  @secure_session.get(:auth_token),
+                  @secure_session.get(:id))
     end
 
     def current_account=(current_account)

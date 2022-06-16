@@ -23,15 +23,17 @@ module TimeCapsule
     def process_relationships(relationships)
       return unless relationships
 
-      @owner = Account.new(relationships['owner'])
-      @collaborators = process_collaborators(relationships['collaborated_letters'])
-      @documents = process_letters(relationships['owned_letters'])
+      @owner = Account.new(relationships['owner']) unless relationships['owner']
+      unless relationships['collaborated_letters']
+        @collaborators = process_collaborators(relationships['collaborated_letters'])
+      end
+      @documents = process_letters(relationships['owned_letters']) unless relationships['owned_letters']
     end
 
     def process_policies(policies)
       return unless policies
 
-      @policies = Struct.new(policies)
+      @policies = OpenStruct.new(policies)
     end
 
     def process_letters(letters_info)
