@@ -75,7 +75,7 @@ module TimeCapsule
                   if letter['policies']['can_access']
                     # lock shared letter when editing
                     UpdateLetter.new(App.config)
-                                .call(@current_account, letter_id, {"is_locked"=>true})
+                                .call(@current_account, letter_id, { 'is_locked' => true })
                   else
                     flash[:error] = 'Collaborator is editing now.'
                     routing.redirect "/capsules/#{capsule['attributes']['id']}"
@@ -92,7 +92,7 @@ module TimeCapsule
               routing.on 'leave' do
                 routing.get do
                   UpdateLetter.new(App.config)
-                              .call(@current_account, letter_id, {"is_locked"=>false})
+                              .call(@current_account, letter_id, { 'is_locked' => false })
                   routing.redirect @capsule_route
                 end
               end
@@ -178,7 +178,7 @@ module TimeCapsule
             collaborators = GetAllCollaborators.new(App.config).call(
               @current_account, letters:
             )
-            binding.pry
+
             view :capsule, locals: {
               current_account: @current_account, capsule:, letters:, collaborators:
             }

@@ -24,14 +24,16 @@ module TimeCapsule
       return unless relationships
 
       @owner = Account.new(relationships['owner']) unless relationships['owner']
-      @collaborators = process_collaborators(relationships['collaborated_letters']) unless relationships['collaborated_letters']
+      unless relationships['collaborated_letters']
+        @collaborators = process_collaborators(relationships['collaborated_letters'])
+      end
       @documents = process_letters(relationships['owned_letters']) unless relationships['owned_letters']
     end
 
     def process_policies(policies)
       return unless policies
 
-      @policies = OpenStruct.new(policies)
+      @policies = Struct.new(policies)
     end
 
     def process_letters(letters_info)
