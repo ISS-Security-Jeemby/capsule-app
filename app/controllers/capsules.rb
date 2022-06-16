@@ -102,9 +102,6 @@ module TimeCapsule
               routing.on 'delete' do
                 routing.get do
                   DeleteLetter.new(App.config).call(@current_account, letter_id)
-                  # view :letter, locals: {
-                  #    current_account: @current_account, letter:
-                  # }
                   routing.redirect @capsule_route
                 end
               end
@@ -170,8 +167,10 @@ module TimeCapsule
               flash[:error] = 'No Letters'
               routing.redirect '/capsules'
             end
+            letters_data = letters['data']
+            senders = capsule.type == 3 ? letters['senders'] : []
             status_code = { 1 => 'Draft', 2 => 'Sent', 3 => 'Receiver Received' }
-            letters.each do |letter|
+            letters_data.each do |letter|
               letter['attributes']['status'] = status_code[letter['attributes']['status']]
             end
 
@@ -180,7 +179,7 @@ module TimeCapsule
               @current_account, letters:
             )
             view :capsule, locals: {
-              current_account: @current_account, capsule:, letters:, collaborators:
+              current_account: @current_account, capsule:, letters: letters_data, collaborators:, senders:
             }
           rescue StandardError => e
             puts e.full_message

@@ -8,9 +8,10 @@ table class="table table-hover"
     tr
       th Letter name
       - if capsule.type==2
-        th Is Owner
+        th Role
         th Collaborator
-      th Receiver
+      - if capsule.type==3
+        th Senders
       - unless capsule.type==3
         th Status
       th Action
@@ -21,15 +22,23 @@ table class="table table-hover"
           p #{letters[i]['attributes']['title']}
         - if capsule.type==2
           td
-            p #{letters[i]['relationships']['capsule']['attributes']['id'] == capsule.id}
+            p #{letters[i]['relationships']['capsule']['attributes']['id'] == capsule.id ? "Owner" : "Collaborator"}
           td
             - for j in 0..collaborators[i].length()-1
               p class="badge rounded-pill bg-light text-wrap m-1" #{collaborators[i][j]}
             - if letters[i] && letters[i]['attributes']['status']=="Draft"
               button type="button" class="btn btn-outline-dark btn-sm" data-bs-toggle="modal" data-bs-target="#newCollaboratorModal#{letters[i]['attributes']['id']}" + 
               include :collaborator_new_partial
-        td 
-          p #{ letters[i]['attributes']['receiver_id'].empty? ? "N/A" : letters[i]['attributes']['receiver_id'] }
+        - if capsule.type==3
+          td 
+            - if senders[i].nil?
+              p "N/A"
+            - else 
+              - for j in 0..senders[i].length()-1
+                - if senders[i][j].nil?
+                  p "N/A"
+                - else
+                  p class="badge rounded-pill bg-light text-wrap m-1" #{senders[i][j]}
         - unless capsule.type==3
           td
             - if letters[i]['attributes']['status'] == 'Draft'
