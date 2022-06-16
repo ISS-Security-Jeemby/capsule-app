@@ -23,9 +23,9 @@ module TimeCapsule
     def process_relationships(relationships)
       return unless relationships
 
-      @owner = Account.new(relationships['owner'])
-      @collaborators = process_collaborators(relationships['collaborated_letters'])
-      @documents = process_letters(relationships['owned_letters'])
+      @owner = Account.new(relationships['owner']) unless relationships['owner']
+      @collaborators = process_collaborators(relationships['collaborated_letters']) unless relationships['collaborated_letters']
+      @documents = process_letters(relationships['owned_letters']) unless relationships['owned_letters']
     end
 
     def process_policies(policies)

@@ -11,6 +11,7 @@ table class="table"
     tr
       th Letter name
       - if capsule.type==2
+        th Is Owner
         th Collaborator
       th Receiver
       - unless capsule.type==3
@@ -22,6 +23,8 @@ table class="table"
         td 
           p #{letters[i]['attributes']['title']}
         - if capsule.type==2
+          td
+            p #{letters[i]['relationships']['capsule']['attributes']['id'] == capsule.id}
           td
             - for j in 0..collaborators[i].length()-1
               button type="button" class="btn btn-secondary" #{collaborators[i][j]}
@@ -35,12 +38,13 @@ table class="table"
           p #{letters[i]['attributes']['status']}
         td
           - if capsule.type!=3 && letters[i]['attributes']['status']=="Draft"
-            - if letters[i]
+            - if letters[i]['policies']['can_edit']
               button type="button" class="btn btn-primary" onclick="window.location.href='/capsules/#{capsule.id}/letters/#{letters[i]['attributes']['id']}/edit'" Edit
               '
               button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#sendLetterModal#{letters[i]['attributes']['id']}" Send
               include :send_letter_partial
             - if letters[i]['policies']['can_delete']
+              '
               button type="button" class="btn btn-danger" onclick="window.location.href='/capsules/#{capsule.id}/letters/#{letters[i]['attributes']['id']}/delete'" Delete
           - if capsule.type==3 && letters[i]
             button type="button" class="btn btn-primary" onclick="window.location.href='/capsules/#{capsule.id}/letters/#{letters[i]['attributes']['id']}/view'" View
