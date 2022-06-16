@@ -35,18 +35,21 @@ module TimeCapsule
                           grant_type: 'authorization_code',
                           redirect_uri: "#{@config.APP_URL}/auth/google-callback",
                           code: code })
-      raise UnauthorizedError unless challenge_response.status < 400
+      raise UnauthorizedError unless challenge_response.status == 200
 
       JSON.parse(challenge_response)['access_token']
     end
 
     def get_googlesso_account_from_api(access_token)
-      response =
-        HTTP.post("#{@config.API_URL}/auth/google_sso",
-                  json: { access_token: access_token })
-      raise(ReuseEmailError) if response.code == 400
-      raise if response.code > 400
+      signed_google_sso_info = { access_token: }
+                        .then { |sso_info| SignedMessage.sign(sso_info) }
 
+      response = HTTP.post(
+        "#{@config.API_URL}/auth/google_sso",
+        json: signed_google_sso_info
+      )
+      raise(ReuseEmailError) if response.code == 400
+      raise(UnauthorizedError) unless response.code == 200
       account_info = JSON.parse(response)['data']['attributes']
       {
         account: account_info['account'],
