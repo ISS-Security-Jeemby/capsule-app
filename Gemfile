@@ -45,3 +45,6 @@ end
 group :development, :test do
   gem 'rerun'
 end
+
+# test coverage
+gem 'simplecov'
